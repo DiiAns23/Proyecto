@@ -1,0 +1,142 @@
+package Analizadores; 
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import Clases.*;
+
+parser code 
+{:
+    public static ArrayList<Nodo> nodos = new ArrayList<>();
+    public static Nodo z= new Nodo();
+    
+    /**
+     * Método al que se llama automáticamente ante algún error sintactico.
+     **/ 
+    public void syntax_error(Symbol s){ 
+        System.out.println("Error Sintáctico en la Línea " + (s.left) +
+        " Columna "+s.right+ ". Este componente no deberia de venir: " +s.value+"."); 
+    } 
+
+    /**
+     * Método al que se llama automáticamente ante algún error sintáctico 
+     * en el que ya no es posible una recuperación de errores.
+     **/ 
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("No se puede recuparar el error Sintactico en la Linea: " + 
+        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
+        " no se reconoce."); 
+    }  
+:} 
+
+terminal String CONJUNTO;
+terminal String DIP,FLECHA,LLAVEI,LLAVED,DPUNTOS,PUNTO,INTERR,PTCOMA,BARRA,MAS,POR,PORC;
+terminal String ENTERO,RAN,ALFAMAY,ALFAMIN,COMILLA,COMA,DEC;
+non terminal ini,expresion,expresion2,conjuntos,listainstrucciones;
+non terminal instrucciones,n_exp,alfabeto,conj,conj2;
+non terminal instruccion,combinacion,comilla,xdxdxd,lect,lect2;
+
+
+start with ini; 
+
+ini::=instrucciones;
+
+instrucciones ::= 
+   LLAVEI  listainstrucciones LLAVED
+; 
+
+listainstrucciones::=
+    listainstrucciones instruccion
+ |  instruccion
+;
+
+instruccion ::= 
+   conj 
+ | n_exp {:z.RecorrerAlfabeto();:} 
+ | PORC PORC
+ | lect
+ | error
+;
+
+conj::=
+    CONJUNTO DPUNTOS RAN:a {:
+    z.nombre(a);
+    :} FLECHA  conjuntos PTCOMA 
+;
+
+conjuntos ::=   
+    ALFAMIN:b DIP ALFAMIN:c   {:z.ranga(b); 
+                z.rangb(c); 
+                z.Alfabeto();
+                :}
+ |  ALFAMAY:b DIP ALFAMAY:c  {:z.ranga(b); 
+                z.rangb(c); 
+                z.Alfabeto();
+                :}
+ |  ENTERO:b  DIP ENTERO:c    {:z.ranga(b); 
+                z.rangb(c); 
+                z.Alfabeto();:}
+ |  xdxdxd
+;
+
+xdxdxd::=
+    ALFAMIN:b {:z.conj(b);:} conj2
+ |  ALFAMAY:b {:z.conj(b);:} conj2
+ |  ENTERO:b  {:z.conj(b);:} conj2
+;
+
+conj2::=
+    COMA xdxdxd
+ |  ALFAMIN:b {:z.conj(b);:}
+ |  ALFAMAY:b {:z.conj(b);:}
+ |  ENTERO:b  {:z.conj(b);:}
+ |  {:z.Alfabeto();:}
+;
+
+
+n_exp ::=
+    RAN:a   FLECHA  expresion PTCOMA 
+;
+
+expresion ::=
+    INTERR alfabeto
+ |  POR expresion2:a
+ |  POR alfabeto
+ |  PUNTO combinacion
+ |  BARRA combinacion
+ |  MAS alfabeto
+ |  MAS expresion2:a
+ |  INTERR expresion2:a
+;
+
+expresion2::=
+    PUNTO combinacion
+ |  BARRA combinacion
+;
+
+combinacion::=
+    alfabeto expresion:b
+ |  alfabeto alfabeto
+ |  alfabeto comilla
+ |  expresion alfabeto
+ |  expresion comilla
+ |  expresion expresion
+ |  comilla expresion
+ |  comilla alfabeto
+ |  comilla comilla
+;
+
+alfabeto::=
+    LLAVEI RAN:a LLAVED
+;
+
+comilla::=
+    COMILLA RAN:a COMILLA 
+;
+
+lect::=
+    RAN:a   DPUNTOS COMILLA lect2 COMILLA PTCOMA 
+;
+
+lect2::=
+    RAN:b   
+ |  DEC:b   
+;
