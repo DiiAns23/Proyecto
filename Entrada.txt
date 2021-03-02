@@ -1,9 +1,17 @@
 {
-CONJ: letra -> a ~ z; // declarando conjunto de letras desde a hasta z en minusculas
-CONJ: digito -> 0~3; // creamos el conjunto de digitos solo para 0, 1, 2 y 3
+<!comentario 
+en muchas 
+lineas :3!>
+CONJ: letra -> a~z; // declarando conjunto de letras desde a hasta z en minusculas
+CONJ: digitos-> 0~9; // creamos el conjunto de digitos solo para 0, 1, 2 y 3
+CONJ: random -> A,b,C,1,2,Z;
 
-identificador -> .{letra}*| "_" |{letra} {digito};
+Compi -> .+|."a"+"b".?"c"."b"*"a"+|"a""3";
 decimales -> . +{digito} . "." + {digito};
+nuevo -> ..*{letra}|{letra}{letra}{letra};
+identificador -> .{letra}*| "_" |{letra} {digito};
+
+
 
 %%
 %%
