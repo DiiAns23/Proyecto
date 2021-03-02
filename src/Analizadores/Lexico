@@ -22,7 +22,6 @@ F = "->"
 COMENTUNILINEA      =   ("//".*\r\n)|("//".*\n)|("//".*\r)
 COMENTMULTILINEA     =  \<\!([^!\>]|[^!]\>|\![^\>])*\!\>
 CADENACOMILLASDOBLES = [\"]
-ESPECIAL = ("\"(n|\'|\"))
 ALFAMIN= [a-z]
 ALFAMAY= [A-Z]
 ALFA = [A-Za-z]

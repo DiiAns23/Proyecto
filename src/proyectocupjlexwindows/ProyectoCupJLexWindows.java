@@ -12,12 +12,15 @@ import java.io.FileInputStream;
  * @author diego
  */
 public class ProyectoCupJLexWindows {
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
         interpretar("Entrada.txt");
+        
     }
     
     public static void interpretar(String path){
@@ -29,6 +32,5 @@ public class ProyectoCupJLexWindows {
             System.out.println("Error Fatal de Compilacion :c");
         }
     }
-    
     
 }
