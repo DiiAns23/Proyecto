@@ -53,6 +53,7 @@ public class Tabla_Follow {
             archivo = new File(arbol.getAbsolutePath()+"/"+nombre+".dot");
             archivo.createNewFile();
             ruta = arbol.getAbsolutePath()+"/"+nombre;
+            Interfaz1.RutasSiguientes.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Contenido);
             Escribir.close();
@@ -62,12 +63,13 @@ public class Tabla_Follow {
             archivo = new File(arbol.getAbsolutePath()+"/"+nombre+".dot");
             archivo.createNewFile();
             ruta = arbol.getAbsolutePath()+"/"+nombre;
+            Interfaz1.RutasSiguientes.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Contenido);
             Escribir.close();
         }
         
-        String text = "dot -Tpdf " + ruta+".dot" + " -o " + ruta + ".pdf";
+        String text = "dot -Tpng " + ruta+".dot" + " -o " + ruta + ".png";
         CMD(text);
         File borrar = new File (ruta+".dot");
         borrar.delete();
