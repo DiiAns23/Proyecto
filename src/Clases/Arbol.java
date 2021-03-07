@@ -5,11 +5,8 @@
  */
 package Clases;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
-import javax.swing.text.TabableView;
 
 /**
  *
@@ -73,7 +70,7 @@ public class Arbol {
         Tabla_Transicion graficar = new Tabla_Transicion();
         graficar.Tabla("S0{"+raiz.Primeros+"}", encabezado,nombres.get(indez));
 
-        Interfaz mandar = new Interfaz();
+        Interfaz1 mandar = new Interfaz1();
         mandar.listanombrefollow(nombres.get(indez));
         mandar.listanombreTransicion(nombres.get(indez));
         
@@ -227,7 +224,7 @@ public class Arbol {
         dot = dot + "}";
         Generar_Arbol_ER generar = new Generar_Arbol_ER();
         generar.Crear(nombres.get(index), dot);
-        Interfaz mandar = new Interfaz();
+        Interfaz1 mandar = new Interfaz1();
         mandar.listanombrearbol(nombres.get(index));
         index++;
     }
@@ -324,24 +321,30 @@ public class Arbol {
     }
 
     //Tabla de Transiciones
-    public static LinkedList<String> encabezado = new LinkedList();
-    public static ArrayList<Lista_Follow_2> aux = new ArrayList();
-    public static LinkedList<Estado> estados = new LinkedList();
+    public LinkedList<String> encabezado = new LinkedList();
+    public ArrayList<Lista_Follow_2> aux = new ArrayList();
+    public LinkedList<Estado> estados = new LinkedList();
+    public LinkedList<Transiciones> transiciones = new LinkedList();
     public LinkedList<String> usados = new LinkedList();
-    public static int num_estado =0;
+    public static int num_estado = 1;
+    
+    
     public void estadoinicial() {
         Encabezado();
     }
     
+        
     public void Encabezado() {
         Lista_Follow_2 n;
         for (int follow = 0; follow <Siguientes.size(); follow++) {
             String hoja = Siguientes.get(follow).getHoja();
             String numero = Siguientes.get(follow).getNumero()+"";
-            LinkedList<String> sig = new LinkedList();
+            LinkedList<Integer> sig = new LinkedList();
             String []sigs =  Siguientes.get(follow).getFollow().split(",");
             for(int i = 0; i <sigs.length;i++){
-                sig.add(sigs[i]);
+                if(!sigs[i].equals("")){
+                    sig.add(Integer.parseInt(sigs[i]));
+                }
             }
             n = new Lista_Follow_2(hoja, numero, sig);
             aux.add(n);
@@ -353,14 +356,18 @@ public class Arbol {
         int a = encabezado.size();
         encabezado.remove(a-1);
         String []b = raiz.Primeros.split(",");
-        LinkedList<String> sigs = new LinkedList();
-        for(int x =0;x<b.length;x++){
-            sigs.add(b[x]);
+        LinkedList<Integer> sigs = new LinkedList();
+        for(int x =0;x<b.length;x++){ // #
+            sigs.add(Integer.parseInt(b[x]));
         }
-        Crear_Estado("S0",sigs);
-        estados("S",sigs);
+        estados.add(new Estado("S0", sigs));
+        Estados("S0",sigs);
+        System.out.println("==============================");
         aux.clear();
+        num_estado = 1;
     }
+    
+    
     
     public void imprimirFollows(){
         for(int i=0; i<aux.size(); i++){
@@ -377,44 +384,42 @@ public class Arbol {
         }
     }
     
-    public void estados(String nombre, LinkedList<String> siguientes){
-        LinkedList<String> aux2 = new LinkedList();
-        for(int x=0; x<encabezado.size();x++){
-            for(int y =0; y<siguientes.size();y++){
-                Lista_Follow_2 pos = aux.get(Integer.parseInt(siguientes.get(y))-1);
-                for(int z = 0; z<pos.getFollow().size();z++){
-                    if(pos.getHoja().contains(encabezado.get(x))){
-                        if(!aux2.contains(pos.getNumero())){
-                            aux2.add(pos.getNumero());
+    public void Estados(String nombre, LinkedList<Integer> siguientes){
+        for (String encabezado1 : encabezado) {  
+            LinkedList<Integer> auxiliar1 = new LinkedList();
+            for(int siguientes1 : siguientes){
+                Lista_Follow_2 sig = aux.get(siguientes1-1);
+                if(encabezado1.equals(sig.getHoja())){
+                    for(int i: sig.getFollow()){
+                        if(!auxiliar1.contains(i)){
+                            auxiliar1.add(i);
+                        }
+                    }
+                }
+            }
+            
+            if(!auxiliar1.isEmpty()){
+                if(!usados.contains(auxiliar1.toString())){
+                    String nombre2 = "S"+num_estado;
+                    estados.add(new Estado(nombre2,auxiliar1));
+                    transiciones.add(new Transiciones(nombre, encabezado1,nombre2));
+                    num_estado++;
+                    usados.add(auxiliar1.toString());
+                    System.out.println("Estado: "+nombre+",  Alfabeto: "+encabezado1+",  Destino: "+nombre2);
+                    Estados(nombre2,auxiliar1);
+                }else{
+                    for(Estado x: estados){
+                        if(x.getSiguientes().equals(auxiliar1)){
+                            transiciones.add(new Transiciones(nombre,encabezado1, x.getEstado()));
+                            num_estado++;
+                            System.out.println("Estado: "+nombre+",  Alfabeto: "+encabezado1+",  Destino: "+x.getEstado());
                         }
                     }
                 }
             }
         }
-    }
-    
-    public boolean crear(LinkedList<String> aux2){
-        for(int y = 0; y<estados.size();y++){
-                if(aux2.containsAll(estados.get(y).getLista()) && estados.get(y).getLista().containsAll(aux2)){
-                    return false;
-                }
-            }
-        return true;
-    }
-    
-    public void Crear_Estado(String nombre, LinkedList<String> siguientes){
-        Estado nuevo = new Estado(nombre,siguientes);
-        estados.add(nuevo);
-    }
-    
-    public void Crear(){
-        String []b = raiz.Primeros.split(","); 
-        LinkedList<String> sigs = new LinkedList();
-        for(int x =0;x<b.length;x++){
-            sigs.add(b[x]);
-        }
-        Estado temp = new Estado("S0",sigs);
-    }
-
-
+    }     
 }
+
+
+

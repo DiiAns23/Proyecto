@@ -2,17 +2,18 @@ package Analizadores;
 import java_cup.runtime.*;
 import java.util.ArrayList;
 import Clases.*;
+import Errores.*;
 
 parser code 
 {:
     public static Expresion_Regular er = new Expresion_Regular();
+    public ArrayList<Excepcion> Errores = new ArrayList();
     
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){ 
-        System.out.println("Error Sintáctico en la Línea " + (s.left) +
-        " Columna "+s.right+ ". Este componente no deberia de venir: " +s.value+"."); 
+        Errores.add(new Excepcion("Sintactico", "Error en la sintaxis detectado. Se detecto:" +s.value, s.left+"",s.right+""));
     } 
 
     /**
@@ -24,10 +25,14 @@ parser code
         (s.left)+ " Columna "+s.right+". Componente " + s.value + 
         " no se reconoce."); 
     }  
+
+    public ArrayList<Excepcion> getErrores(){
+    return Errores;
+}
 :} 
 
 terminal String CONJUNTO;
-terminal String DIP,FLECHA,LLAVEI,LLAVED,DPUNTOS,PUNTO,INTERR,PTCOMA,BARRA,MAS,POR,PORC;
+terminal String DIP,ASIG,NACION,LLAVEI,LLAVED,DPUNTOS,PUNTO,INTERR,PTCOMA,BARRA,MAS,POR,PORC;
 terminal String ENTERO,RAN,ALFAMAY,ALFAMIN,COMILLA,COMA,DEC;
 non terminal ini,expresion,expresion2,conjuntos,listainstrucciones;
 non terminal instrucciones,n_exp,alfabeto,conj,conj2;
@@ -52,11 +57,11 @@ instruccion ::=
  | n_exp 
  | PORC PORC {:er.Separacion();:}
  | lect
- | error
+ | error PTCOMA
 ;
 
 conj::=
-    CONJUNTO DPUNTOS RAN:a FLECHA  conjuntos PTCOMA 
+    CONJUNTO DPUNTOS RAN:a ASIG NACION  conjuntos PTCOMA 
 ;
 
 conjuntos ::=   
@@ -82,7 +87,7 @@ conj2::=
 
 
 n_exp ::=
-    RAN:b   FLECHA  expresion:a PTCOMA  {:er.ER((String)a, b);:}
+    RAN:b   ASIG NACION  expresion:a PTCOMA  {:er.ER((String)a, b);:}
 ;
 
 expresion ::=

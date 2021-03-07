@@ -5,12 +5,18 @@
  */
 package Clases;
 
+import static Clases.Interfaz1.nombreArbol;
+import static Clases.Interfaz1.nombreFollow;
+import static Clases.Interfaz1.nombretrans;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,7 +108,6 @@ public class Interfaz1 extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        entrada.setEditable(false);
         entrada.setColumns(20);
         entrada.setRows(5);
         jScrollPane1.setViewportView(entrada);
@@ -169,23 +174,23 @@ public class Interfaz1 extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 610, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addComponent(gen_automatas, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(73, 73, 73)
                         .addComponent(analizar_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1073, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel2))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(119, Short.MAX_VALUE))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(613, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,16 +198,16 @@ public class Interfaz1 extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(gen_automatas, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
                     .addComponent(analizar_entrada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(17, 17, 17)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         pack();
@@ -212,7 +217,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         try {
             open();
         } catch (IOException ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Interfaz1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_abrirActionPerformed
 
@@ -225,7 +230,13 @@ public class Interfaz1 extends javax.swing.JFrame {
     }//GEN-LAST:event_guardar_comoActionPerformed
 
     private void gen_automatasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gen_automatasActionPerformed
-        interpretar();
+        Analizadores.Sintactico pars;
+        try {
+            pars=new Analizadores.Sintactico(new Analizadores.Lexico(new StringReader(entrada.getText())));
+            pars.parse();        
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,"No se ha seleccionado \n   ningun archivo de entrada ");
+        }
     }//GEN-LAST:event_gen_automatasActionPerformed
 
     private void analizar_entradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizar_entradaActionPerformed
@@ -235,7 +246,7 @@ public class Interfaz1 extends javax.swing.JFrame {
     private void open()  throws IOException {
 
         JFileChooser JFC = new JFileChooser();
-        JFC.setFileFilter(new FileNameExtensionFilter("todos los archivos *","txt","olc","OLC"));
+        JFC.setFileFilter(new FileNameExtensionFilter("todos los archivos *","olc","OLC"));
         int abrir = JFC.showDialog(null, "Abrir");
         if (abrir == JFileChooser.APPROVE_OPTION) {
 
@@ -245,22 +256,17 @@ public class Interfaz1 extends javax.swing.JFrame {
 
                 File archivo = JFC.getSelectedFile();
                 String rut = JFC.getSelectedFile().getAbsolutePath();
-                if (rut.endsWith(".txt")|| rut.endsWith(".olc")) {
-
+                if (rut.endsWith(".OLC")|| rut.endsWith(".olc")) {
                     FR = new FileReader(archivo);
                     BR = new BufferedReader(FR);
                     String linea;
-                    String contenido = "";
                     ruta = archivo.getAbsolutePath();
-                    //interpretar(ruta);
                     entrada.setText(null);
                     while ((linea = BR.readLine()) != null) {
                         entrada.setText(entrada.getText()+linea+"\n");
                     }
-                    
-
                 } else {
-                    JOptionPane.showMessageDialog(this, "Archivo no soportado", "Oops! Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Archivo no soportado", "Ha ocurrido un error", JOptionPane.ERROR_MESSAGE);
                     open();
                 }
 
@@ -278,15 +284,18 @@ public class Interfaz1 extends javax.swing.JFrame {
             }
         }
     }
+       
     
-    public static void interpretar(){
-        Analizadores.Sintactico pars;
-        try {
-            pars=new Analizadores.Sintactico(new Analizadores.Lexico(new FileInputStream(ruta)));
-            pars.parse();        
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,"No se ha seleccionado \n   ningun archivo de entrada ");
-        }
+    public void listanombrearbol(String nombre) {
+        nombreArbol.add(nombre);
+    }
+
+    public void listanombrefollow(String nombre) {
+        nombreFollow.add(nombre);
+    }
+
+    public void listanombreTransicion(String nombre) {
+        nombretrans.add(nombre);
     }
     /**
      * @param args the command line arguments
@@ -316,10 +325,8 @@ public class Interfaz1 extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Interfaz1().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Interfaz1().setVisible(true);
         });
     }
 
@@ -327,7 +334,7 @@ public class Interfaz1 extends javax.swing.JFrame {
     private javax.swing.JMenuItem abrir;
     private javax.swing.JButton analizar_entrada;
     private javax.swing.JMenu archivo;
-    private javax.swing.JTextArea entrada;
+    public static javax.swing.JTextArea entrada;
     private javax.swing.JButton gen_automatas;
     private javax.swing.JMenuItem generar;
     private javax.swing.JMenuItem guardar;

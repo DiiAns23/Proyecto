@@ -5,6 +5,7 @@
  */
 package Clases;
 
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 import java.util.LinkedList;
 
 /**
@@ -14,13 +15,13 @@ import java.util.LinkedList;
 public class Estado {
 
     private String estado;
-    private LinkedList<String> lista;
-    private String simbolo;
+    private LinkedList<Integer> siguientes;
+    private String transicion;
 
-    public Estado(String estado, LinkedList<String> lista) { //{1,2,3} {1,4,5}
+    public Estado(String estado, LinkedList<Integer> lista) { //{1,2,3} {1,4,5}
         this.estado = estado;
-        this.lista = lista;
-        this.simbolo = simbolo;
+        this.siguientes = lista;
+        this.transicion = transicion;
     }
 
     public String getEstado() {
@@ -31,20 +32,20 @@ public class Estado {
         this.estado = estado;
     }
 
-    public LinkedList getLista() {
-        return lista;
+    public LinkedList getSiguientes() {
+        return siguientes;
     }
 
-    public void setLista(LinkedList lista) {
-        this.lista = lista;
+    public void setSiguientes(LinkedList siguientes) {
+        this.siguientes = siguientes;
     }
 
-    public String getSimbolo() {
-        return simbolo;
+    public String getTransicion() {
+        return this.transicion;
     }
 
-    public void setSimbolo(String simbolo) {
-        this.simbolo = simbolo;
+    public void setTransision(String simbolo) {
+        this.transicion = simbolo;
     }
     
 

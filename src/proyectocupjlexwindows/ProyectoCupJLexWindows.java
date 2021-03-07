@@ -17,7 +17,7 @@ public class ProyectoCupJLexWindows {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        interpretar("Entrada.txt");
+        interpretar("Entrada.olc");
     }
     
     public static void interpretar(String path){
@@ -27,6 +27,7 @@ public class ProyectoCupJLexWindows {
             pars.parse();        
         } catch (Exception ex) {
             System.out.println("Error Fatal de Compilacion :c");
+            ex.printStackTrace();
         }
     }
     

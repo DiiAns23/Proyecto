@@ -14,9 +14,9 @@ import java.util.LinkedList;
 public class Lista_Follow_2 {
     private String Hoja;
     private String Numero;
-    private LinkedList<String> Follow;
+    private LinkedList<Integer> Follow;
 
-    public Lista_Follow_2(String Hoja, String Numero, LinkedList<String> Follow) {
+    public Lista_Follow_2(String Hoja, String Numero, LinkedList<Integer> Follow) {
         this.Hoja = Hoja;
         this.Numero = Numero;
         this.Follow = Follow;
@@ -30,11 +30,11 @@ public class Lista_Follow_2 {
         return Numero;
     }
 
-    public LinkedList<String> getFollow() {
+    public LinkedList<Integer> getFollow() {
         return Follow;
     }
 
-    public void setFollow(LinkedList<String> Follow) {
+    public void setFollow(LinkedList<Integer> Follow) {
         this.Follow = Follow;
     }   
 }
