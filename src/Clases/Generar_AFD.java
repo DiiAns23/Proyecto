@@ -5,66 +5,42 @@
  */
 package Clases;
 
-/**
- *
- * @author diego
- */
-import java.awt.Desktop;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 
-public class Tabla_Transicion {
-
-    @SuppressWarnings("empty-statement")
-    public void Tabla(LinkedList<Transiciones> transiciones, LinkedList<String> encabezado, String nombre) throws IOException {
-
+/**
+ *
+ * @author diego
+ */
+public class Generar_AFD {
+    
+    public void AFD(String nombre, LinkedList<Transiciones> transiciones) throws FileNotFoundException, IOException{
         String Contenido;
-        Contenido ="digraph G { node [rankdir=TB,shape= filled, style= filled, fontname=\"Times New Roman\", \n"
-                + "color=\"white\", fillcolor=\"#90EE90\"] nodotable \n"
-                + "[ label =<<table cellpadding='10' border = '1' align='center'> \n"
-                + "<tr>\n"
-                + "<td colspan='"
-                +(encabezado.size()+1)
-                + "'>TABLA DE TRANSICIONES</td>\n"
-                + "</tr>\n"
-                + "<tr><td>Estado</td>\n";
-
-        String aux = "";
-        for(String a: encabezado){
-            aux = aux +"<td>"+a+"</td> \n";
-        }
-        aux = aux +"</tr>\n";
+        Contenido ="digraph G { \n"
+                + "rankdir=LR;"
+                + "node [shape= circle, style= filled, fontname=\"Times New Roman\", "
+                + "color=\"white\", fillcolor=\"#90EE90\"] \n";
         
-        for(Transiciones transis: transiciones){
-            aux = aux +"<tr>\n <td>"+ transis.getInicio()+"</td>";
-            for(String a: encabezado){
-                if(a.equals(transis.alfabeto)){
-                    aux = aux +"<td>"+transis.fin+"</td>\n";
-                }else{
-                    aux = aux +"<td> --- </td>\n";
-                }
-            }
-            aux = aux + "</tr>\n";
+        String aux = "";
+        for (Transiciones trans: transiciones) {
+            aux = aux +trans.inicio+"->"+trans.fin+"[label =\""+trans.alfabeto+"\"];\n";
         }
-        aux = aux 
-                +"</table>>]\n"
-                + "}";
+        aux = aux +"}";
         Contenido = Contenido + aux;
         File archivo;
         PrintWriter Escribir;
         String ruta;
-        File arbol = new File("TRANSICIONES_201903865");
+        File arbol = new File("AFD_201903865");
         if(arbol.exists()){
             archivo = new File(arbol.getAbsolutePath()+"/"+nombre+".dot");
             archivo.createNewFile();
             ruta = arbol.getAbsolutePath()+"/"+nombre;
-            Interfaz1.RutasTransiciones.add(ruta+".png");
+            Interfaz1.RutasAutomatas.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Contenido);
             Escribir.close();
@@ -74,7 +50,7 @@ public class Tabla_Transicion {
             archivo = new File(arbol.getAbsolutePath()+"/"+nombre+".dot");
             archivo.createNewFile();
             ruta = arbol.getAbsolutePath()+"/"+nombre;
-            Interfaz1.RutasTransiciones.add(ruta+".png");
+            Interfaz1.RutasAutomatas.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Contenido);
             Escribir.close();
@@ -102,5 +78,5 @@ public class Tabla_Transicion {
             e.printStackTrace();
         }
     }
-
 }
+

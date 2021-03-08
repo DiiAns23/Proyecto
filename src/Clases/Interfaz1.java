@@ -5,7 +5,6 @@
  */
 package Clases;
 
-import static Clases.Interfaz1.nombreArbol;
 import static Clases.Interfaz1.nombreFollow;
 import static Clases.Interfaz1.nombretrans;
 import java.awt.Image;
@@ -41,10 +40,17 @@ public class Interfaz1 extends javax.swing.JFrame {
     public static String ruta, nombreArchivo, ER;
     public static String temporal = " ";
     public static LinkedList<String> nombreFollow = new LinkedList<>();
-    public static LinkedList<String> nombreArbol = new LinkedList<>();
     public static LinkedList<String> nombretrans = new LinkedList<>();
     public static LinkedList<String> RutasArboles = new LinkedList<>();
     public static LinkedList<String> RutasSiguientes = new LinkedList<>();
+    public static LinkedList<String> RutasTransiciones = new LinkedList<>();
+    public static LinkedList<String> RutasAutomatas = new LinkedList<>();
+    
+    public static LinkedList<String> namesArboles = new LinkedList<>();
+    public static LinkedList<String> nameSiguientes = new LinkedList<>();
+    public static LinkedList<String> nameTransiciones = new LinkedList<>();
+    public static LinkedList<String> nameAutomatas = new LinkedList<>();
+    
     public static int contador = 0;
     public Interfaz1() {
         initComponents();
@@ -85,6 +91,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         imagenes = new javax.swing.JLabel();
         avanzar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        name = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         archivo = new javax.swing.JMenu();
         abrir = new javax.swing.JMenuItem();
@@ -206,63 +213,67 @@ public class Interfaz1 extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
+                        .addGap(52, 52, 52)
                         .addComponent(gen_automatas, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(73, 73, 73)
                         .addComponent(analizar_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(avanzar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(imagenes, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(31, 31, 31))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(209, 209, 209)
+                                .addComponent(avanzar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(25, 25, 25))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(imagenes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(22, 22, 22)
+                            .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(imagenes, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(avanzar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(gen_automatas, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
-                            .addComponent(analizar_entrada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(gen_automatas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(analizar_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(17, 17, 17)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(imagenes, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(avanzar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         pack();
@@ -305,17 +316,15 @@ public class Interfaz1 extends javax.swing.JFrame {
         if(null != opcion)switch (opcion) {
             case "Arboles":
                 SelectArboles(contador);
-                System.out.println(contador);
                 break;
             case "Siguientes":
                 SelectSiguientes(contador);
-                System.out.println(contador);
                 break;
             case "Transiciones":
-                JOptionPane.showMessageDialog(null,"Hola, seleccionaste Transiciones :3");
+                SelectTransiciones(contador);
                 break;
             case "Automatas":
-                JOptionPane.showMessageDialog(null,"Hola, seleccionaste Automatas :3");
+                SelectAutomatas(contador);
                 break;
             default:
                 break;
@@ -377,16 +386,34 @@ public class Interfaz1 extends javax.swing.JFrame {
             ImageIcon ImgIcon = new ImageIcon(RutasArboles.get(numero));
             Icon icono = new ImageIcon(ImgIcon.getImage().getScaledInstance(imagenes.getWidth(),imagenes.getHeight(),Image.SCALE_DEFAULT));
             imagenes.setIcon(icono);
+            name.setText(RutasArboles.get(numero));
         }
     }
-    
-    
     
     private void SelectSiguientes(int numero){
         if(!RutasSiguientes.isEmpty()){
             ImageIcon ImgIcon = new ImageIcon(RutasSiguientes.get(numero));
             Icon icono = new ImageIcon(ImgIcon.getImage().getScaledInstance(imagenes.getWidth(),imagenes.getHeight(),Image.SCALE_DEFAULT));
             imagenes.setIcon(icono);
+            name.setText(RutasSiguientes.get(numero));
+        }
+    }
+    
+    private void SelectTransiciones(int numero){
+        if(!RutasTransiciones.isEmpty()){
+            ImageIcon ImgIcon = new ImageIcon(RutasTransiciones.get(numero));
+            Icon icono = new ImageIcon(ImgIcon.getImage().getScaledInstance(imagenes.getWidth(),imagenes.getHeight(),Image.SCALE_DEFAULT));
+            imagenes.setIcon(icono);
+            name.setText(RutasTransiciones.get(numero));
+        }
+    }
+    
+    private void SelectAutomatas(int numero){
+        if(!RutasAutomatas.isEmpty()){
+            ImageIcon ImgIcon = new ImageIcon(RutasAutomatas.get(numero));
+            Icon icono = new ImageIcon(ImgIcon.getImage().getScaledInstance(imagenes.getWidth(),imagenes.getHeight(),Image.SCALE_DEFAULT));
+            imagenes.setIcon(icono);
+            name.setText(RutasAutomatas.get(numero));
         }
     }
     
@@ -397,16 +424,12 @@ public class Interfaz1 extends javax.swing.JFrame {
         }
     }
     
-    public void listanombrearbol(String nombre) {
-        nombreArbol.add(nombre);
-    }
-    
     public void Avanzar(){
         String opcion = (String) combo.getSelectedItem();
         contador++;
         if(null != opcion)switch (opcion) {
             case "Arboles":
-                if(contador == RutasArboles.size()){
+                if(contador == RutasArboles.size()){ 
                     contador = 0;
                 }
                 SelectArboles(contador);
@@ -418,10 +441,16 @@ public class Interfaz1 extends javax.swing.JFrame {
                 SelectSiguientes(contador);
                 break;
             case "Transiciones":
-                JOptionPane.showMessageDialog(null,"Hola, seleccionaste Transiciones :3");
+                if(contador == RutasTransiciones.size()){
+                    contador = 0;
+                }
+                SelectTransiciones(contador);
                 break;
             case "Automatas":
-                JOptionPane.showMessageDialog(null,"Hola, seleccionaste Automatas :3");
+                if(contador == RutasAutomatas.size()){
+                    contador = 0;
+                }
+                SelectAutomatas(contador);
                 break;
             default:
                 break;
@@ -446,10 +475,16 @@ public class Interfaz1 extends javax.swing.JFrame {
                 SelectSiguientes(contador);
                 break;
             case "Transiciones":
-                JOptionPane.showMessageDialog(null,"Hola, seleccionaste Transiciones :3");
+                if(contador == -1){
+                    contador = RutasTransiciones.size()-1;
+                }
+                SelectTransiciones(contador);
                 break;
             case "Automatas":
-                JOptionPane.showMessageDialog(null,"Hola, seleccionaste Automatas :3");
+                if(contador == -1){
+                    contador = RutasAutomatas.size()-1;
+                }
+                SelectAutomatas(contador);
                 break;
             default:
                 break;
@@ -457,13 +492,6 @@ public class Interfaz1 extends javax.swing.JFrame {
        
     }
 
-    public void listanombrefollow(String nombre) {
-        nombreFollow.add(nombre);
-    }
-
-    public void listanombreTransicion(String nombre) {
-        nombretrans.add(nombre);
-    }
     /**
      * @param args the command line arguments
      */
@@ -540,5 +568,6 @@ public class Interfaz1 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea2;
+    public javax.swing.JLabel name;
     // End of variables declaration//GEN-END:variables
 }
