@@ -48,6 +48,8 @@ public class Tabla_Transicion {
                     aux = aux +"<td>"+transis.fin+"</td>\n";
                 }else{
                     aux = aux +"<td> --- </td>\n";
+                    
+                    
                 }
             }
             aux = aux + "</tr>\n";
