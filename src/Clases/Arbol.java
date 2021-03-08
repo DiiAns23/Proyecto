@@ -20,7 +20,7 @@ public class Arbol {
         public Nodo derecha;
         public Nodo izquierda;
         public String descripcion;
-        public String Anulabre;
+        public String Anulable;
         public String Primeros;
         public String Ultimos;
 
@@ -28,7 +28,7 @@ public class Arbol {
 
             this.etiquetas = nombre;
             this.descripcion = descrip;
-            this.Anulabre = anulable;
+            this.Anulable = anulable;
             this.Primeros = P;
             this.Ultimos = U;
             this.derecha = null;
@@ -61,19 +61,14 @@ public class Arbol {
         this.indez = folow;
         raiz = Agregar();
         ArbolER(nombres);
- 
         Follow(raiz);
         Tabla_Follow generar = new Tabla_Follow();
         generar.TablaFollow(Siguientes, nombres.get(indez));
-
         estadoinicial();
         Tabla_Transicion graficar = new Tabla_Transicion();
-        graficar.Tabla("S0{"+raiz.Primeros+"}", encabezado,nombres.get(indez));
-
-        Interfaz1 mandar = new Interfaz1();
-        mandar.listanombrefollow(nombres.get(indez));
-        mandar.listanombreTransicion(nombres.get(indez));
-        
+        graficar.Tabla(transiciones, encabezado,nombres.get(indez));
+        Generar_AFD afd = new Generar_AFD();
+        afd.AFD(nombres.get(indez), transiciones);
         Siguientes.clear();
         punterodelista = 0;
     }
@@ -90,25 +85,25 @@ public class Arbol {
                 concatenacion.derecha = conca_derecha;
 
                 //Anulables
-                if (conca_izquierda.Anulabre == "A" && conca_derecha.Anulabre == "A") {
-                    concatenacion.Anulabre = "A";
-                } else if (conca_izquierda.Anulabre == "A" && conca_derecha.Anulabre == "N") {
-                    concatenacion.Anulabre = "N";
-                } else if (conca_izquierda.Anulabre == "N" && conca_derecha.Anulabre == "A") {
-                    concatenacion.Anulabre = "N";
-                } else if (conca_izquierda.Anulabre == "N" && conca_derecha.Anulabre == "N") {
-                    concatenacion.Anulabre = "N";
+                if ("A".equals(conca_izquierda.Anulable) && "A".equals(conca_derecha.Anulable)) {
+                    concatenacion.Anulable = "A";
+                } else if ("A".equals(conca_izquierda.Anulable) && "N".equals(conca_derecha.Anulable)) {
+                    concatenacion.Anulable = "N";
+                } else if ("N".equals(conca_izquierda.Anulable) && "A".equals(conca_derecha.Anulable)) {
+                    concatenacion.Anulable = "N";
+                } else if ("N".equals(conca_izquierda.Anulable) && "N".equals(conca_derecha.Anulable)) {
+                    concatenacion.Anulable = "N";
                 }
 
                 //Primeros de concatenacion
-                if (conca_izquierda.Anulabre == "A") {
+                if ("A".equals(conca_izquierda.Anulable)) {
                     concatenacion.Primeros = conca_izquierda.Primeros + "," + conca_derecha.Primeros;
                 } else {
                     concatenacion.Primeros = conca_izquierda.Primeros;
                 }
 
                 //Ultimos de concatenacion
-                if (conca_derecha.Anulabre == "A") {
+                if ("A".equals(conca_derecha.Anulable)) {
                     concatenacion.Ultimos = conca_izquierda.Ultimos + "," + conca_derecha.Ultimos;
                 } else {
                     concatenacion.Ultimos = conca_derecha.Ultimos;
@@ -124,14 +119,14 @@ public class Arbol {
                 or.derecha = or_derecha;
 
                 //Anulables
-                if (or_izquierda.Anulabre == "N" && or_derecha.Anulabre == "N") {
-                    or.Anulabre = "N";
-                } else if (or_izquierda.Anulabre == "A" && or_derecha.Anulabre == "N") {
-                    or.Anulabre = "Anulable";
-                } else if (or_izquierda.Anulabre == "N" && or_derecha.Anulabre == "A") {
-                    or.Anulabre = "Anulable";
-                } else if (or_izquierda.Anulabre == "A" && or_derecha.Anulabre == "A") {
-                    or.Anulabre = "A";
+                if ("N".equals(or_izquierda.Anulable) && "N".equals(or_derecha.Anulable)) {
+                    or.Anulable = "N";
+                } else if ("A".equals(or_izquierda.Anulable) && "N".equals(or_derecha.Anulable)) {
+                    or.Anulable = "Anulable";
+                } else if ("N".equals(or_izquierda.Anulable) && "A".equals(or_derecha.Anulable)) {
+                    or.Anulable = "Anulable";
+                } else if ("A".equals(or_izquierda.Anulable) && "A".equals(or_derecha.Anulable)) {
+                    or.Anulable = "A";
                 }
                 //Primeros
                 or.Primeros = or_izquierda.Primeros + "," + or_derecha.Primeros;
@@ -144,10 +139,10 @@ public class Arbol {
                 punterodelista++;
                 Nodo kleen_izquierda = Agregar();
                 kleen.izquierda = kleen_izquierda;
-                if (kleen_izquierda.Anulabre == "N") {
-                    kleen.Anulabre = "A";
-                } else if (kleen_izquierda.Anulabre == "A") {
-                    kleen.Anulabre = "A";
+                if ("N".equals(kleen_izquierda.Anulable)) {
+                    kleen.Anulable = "A";
+                } else if ("A".equals(kleen_izquierda.Anulable)) {
+                    kleen.Anulable = "A";
                 }
                 //Primeros
                 kleen.Primeros = kleen_izquierda.Primeros;
@@ -160,10 +155,10 @@ public class Arbol {
                 punterodelista++;
                 Nodo positiva_izquierda = Agregar();
                 positiva.izquierda = positiva_izquierda;
-                if (positiva_izquierda.Anulabre == "A") {
-                    positiva.Anulabre = "N";
-                } else if (positiva_izquierda.Anulabre == "N") {
-                    positiva.Anulabre = "N";
+                if ("A".equals(positiva_izquierda.Anulable)) {
+                    positiva.Anulable = "N";
+                } else if ("N".equals(positiva_izquierda.Anulable)) {
+                    positiva.Anulable = "N";
                 }
                 //Primeros
                 positiva.Primeros = positiva_izquierda.Primeros;
@@ -176,10 +171,10 @@ public class Arbol {
                 punterodelista++;
                 Nodo aparicion_izquierda = Agregar();
                 aparicion.izquierda = aparicion_izquierda;
-                if (aparicion_izquierda.Anulabre == "N") {
-                    aparicion.Anulabre = "A";
-                } else if (aparicion_izquierda.Anulabre == "A") {
-                    aparicion.Anulabre = "A";
+                if ("N".equals(aparicion_izquierda.Anulable)) {
+                    aparicion.Anulable = "A";
+                } else if ("A".equals(aparicion_izquierda.Anulable)) {
+                    aparicion.Anulable = "A";
                 }
                 //Primeros
                 aparicion.Primeros = aparicion_izquierda.Primeros;
@@ -224,30 +219,20 @@ public class Arbol {
         dot = dot + "}";
         Generar_Arbol_ER generar = new Generar_Arbol_ER();
         generar.Crear(nombres.get(index), dot);
-        Interfaz1 mandar = new Interfaz1();
-        mandar.listanombrearbol(nombres.get(index));
         index++;
     }
 
     public void Recorrer_Arbol(Nodo temporal) {
-
         if (temporal != null) {
-
             Recorrer_Arbol(temporal.izquierda);
-
             if (temporal.etiquetas.equals("|") || temporal.etiquetas.equals(">") || temporal.etiquetas.equals("{") || temporal.etiquetas.equals("}")) {
-
-                dot = dot + "\"" + temporal.toString() + "\"" + "[label = \"P: " + temporal.Primeros + "|{" + temporal.Anulabre + " |\\" + temporal.etiquetas + "}|U:" + temporal.Ultimos + " \"];\n";
-
+                dot = dot + "\"" + temporal.toString() + "\"" + "[label = \"P: " + temporal.Primeros + "|{" + temporal.Anulable + " |\\" + temporal.etiquetas + "}|U:" + temporal.Ultimos + " \"];\n";
             } else {
-
-                dot = dot + "\"" + temporal.toString() + "\"" + "[label = \"P: " + temporal.Primeros + " |{" + temporal.Anulabre + " |" + temporal.etiquetas + "}|U:" + temporal.Ultimos + " \"];\n";
-
+                dot = dot + "\"" + temporal.toString() + "\"" + "[label = \"P: " + temporal.Primeros + " |{" + temporal.Anulable + " |" + temporal.etiquetas + "}|U:" + temporal.Ultimos + " \"];\n";
             }
             if (temporal.derecha != null) {
                 dot = dot + "\"" + temporal.toString() + "\"" + "->" + "\"" + temporal.derecha.toString() + "\";\n";
             }
-
             if (temporal.izquierda != null) {
                 dot = dot + "\"" + temporal.toString() + "\"" + "->" + "\"" + temporal.izquierda.toString() + "\";\n";
             }
@@ -287,10 +272,10 @@ public class Arbol {
     }
 
     public void recorer(String primer, String ult) {
-        String pseparar = primer;
+        String separar = primer;
         char caracter = ' ';
-        for (int i = 0; i < pseparar.length(); i++) {
-            caracter = pseparar.charAt(i);
+        for (int i = 0; i < separar.length(); i++) {
+            caracter = separar.charAt(i);
             if (Character.isDigit(caracter)) {
                 f.add(Character.toString(caracter));
             }
@@ -341,9 +326,9 @@ public class Arbol {
             String numero = Siguientes.get(follow).getNumero()+"";
             LinkedList<Integer> sig = new LinkedList();
             String []sigs =  Siguientes.get(follow).getFollow().split(",");
-            for(int i = 0; i <sigs.length;i++){
-                if(!sigs[i].equals("")){
-                    sig.add(Integer.parseInt(sigs[i]));
+            for (String sig1 : sigs) {
+                if (!sig1.equals("")) {
+                    sig.add(Integer.parseInt(sig1));
                 }
             }
             n = new Lista_Follow_2(hoja, numero, sig);
@@ -357,31 +342,13 @@ public class Arbol {
         encabezado.remove(a-1);
         String []b = raiz.Primeros.split(",");
         LinkedList<Integer> sigs = new LinkedList();
-        for(int x =0;x<b.length;x++){ // #
-            sigs.add(Integer.parseInt(b[x]));
+        for (String b1 : b) {
+            sigs.add(Integer.parseInt(b1));
         }
         estados.add(new Estado("S0", sigs));
         Estados("S0",sigs);
-        System.out.println("==============================");
         aux.clear();
         num_estado = 1;
-    }
-    
-    
-    
-    public void imprimirFollows(){
-        for(int i=0; i<aux.size(); i++){
-            System.out.println("Hoja: "+aux.get(i).getHoja());
-            System.out.println("Numero: "+aux.get(i).getNumero());
-            System.out.print("Siguientes: ");
-            String g="";
-            int a = aux.get(i).getFollow().size();
-            for(int j=0; j<a;j++){
-                g += aux.get(i).getFollow().get(j)+", ";
-            }
-            System.out.println(g);
-            System.out.println("===========");
-        }
     }
     
     public void Estados(String nombre, LinkedList<Integer> siguientes){
@@ -405,14 +372,11 @@ public class Arbol {
                     transiciones.add(new Transiciones(nombre, encabezado1,nombre2));
                     num_estado++;
                     usados.add(auxiliar1.toString());
-                    System.out.println("Estado: "+nombre+",  Alfabeto: "+encabezado1+",  Destino: "+nombre2);
                     Estados(nombre2,auxiliar1);
                 }else{
                     for(Estado x: estados){
                         if(x.getSiguientes().equals(auxiliar1)){
                             transiciones.add(new Transiciones(nombre,encabezado1, x.getEstado()));
-                            num_estado++;
-                            System.out.println("Estado: "+nombre+",  Alfabeto: "+encabezado1+",  Destino: "+x.getEstado());
                         }
                     }
                 }
@@ -420,6 +384,3 @@ public class Arbol {
         }
     }     
 }
-
-
-

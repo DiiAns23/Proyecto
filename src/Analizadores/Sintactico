@@ -19,7 +19,7 @@ parser code
     /**
      * Método al que se llama automáticamente ante algún error sintáctico 
      * en el que ya no es posible una recuperación de errores.
-     **/ 
+     **/
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
         System.out.println("No se puede recuparar el error Sintactico en la Linea: " + 
         (s.left)+ " Columna "+s.right+". Componente " + s.value + 
@@ -33,7 +33,7 @@ parser code
 
 terminal String CONJUNTO;
 terminal String DIP,ASIG,NACION,LLAVEI,LLAVED,DPUNTOS,PUNTO,INTERR,PTCOMA,BARRA,MAS,POR,PORC;
-terminal String ENTERO,RAN,ALFAMAY,ALFAMIN,COMILLA,COMA,DEC;
+terminal String ENTERO,RAN,ALFAMAY,ALFAMIN,COMILLA,COMA,DEC,ASCII;
 non terminal ini,expresion,expresion2,conjuntos,listainstrucciones;
 non terminal instrucciones,n_exp,alfabeto,conj,conj2;
 non terminal instruccion,combinacion,comilla,xdxdxd,lect,lect2;
@@ -125,6 +125,7 @@ comilla::=
     COMILLA:a RAN:b COMILLA:c             {:RESULT=(String)a+(String)b+(String)c;:}
  |  COMILLA:a ENTERO:b COMILLA:c          {:RESULT=(String)a+(String)b+(String)c;:}
  |  COMILLA:a PUNTO:b  COMILLA:c          {:RESULT=(String)a+(String)b+(String)c;:}
+ |  COMILLA:a ASCII:b  COMILLA:c          {:RESULT=(String)a+(String)b+(String)c;:}
 ;
 
 lect::=

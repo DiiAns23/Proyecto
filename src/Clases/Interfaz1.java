@@ -5,9 +5,9 @@
  */
 package Clases;
 
-import static Clases.Interfaz1.nombreArbol;
 import static Clases.Interfaz1.nombreFollow;
 import static Clases.Interfaz1.nombretrans;
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,8 +20,12 @@ import java.io.StringReader;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -36,10 +40,21 @@ public class Interfaz1 extends javax.swing.JFrame {
     public static String ruta, nombreArchivo, ER;
     public static String temporal = " ";
     public static LinkedList<String> nombreFollow = new LinkedList<>();
-    public static LinkedList<String> nombreArbol = new LinkedList<>();
     public static LinkedList<String> nombretrans = new LinkedList<>();
+    public static LinkedList<String> RutasArboles = new LinkedList<>();
+    public static LinkedList<String> RutasSiguientes = new LinkedList<>();
+    public static LinkedList<String> RutasTransiciones = new LinkedList<>();
+    public static LinkedList<String> RutasAutomatas = new LinkedList<>();
+    
+    public static LinkedList<String> namesArboles = new LinkedList<>();
+    public static LinkedList<String> nameSiguientes = new LinkedList<>();
+    public static LinkedList<String> nameTransiciones = new LinkedList<>();
+    public static LinkedList<String> nameAutomatas = new LinkedList<>();
+    
+    public static int contador = 0;
     public Interfaz1() {
         initComponents();
+        LlenarCombo();
     }
 
     /**
@@ -72,6 +87,11 @@ public class Interfaz1 extends javax.swing.JFrame {
         jTextArea2 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        combo = new javax.swing.JComboBox<>();
+        imagenes = new javax.swing.JLabel();
+        avanzar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        name = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         archivo = new javax.swing.JMenu();
         abrir = new javax.swing.JMenuItem();
@@ -109,6 +129,7 @@ public class Interfaz1 extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         entrada.setColumns(20);
+        entrada.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         entrada.setRows(5);
         jScrollPane1.setViewportView(entrada);
 
@@ -133,6 +154,27 @@ public class Interfaz1 extends javax.swing.JFrame {
         jLabel1.setText("ARCHIVO DE ENTRADA: ");
 
         jLabel2.setText("SALIDA: ");
+
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ver Imagenes" }));
+        combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboActionPerformed(evt);
+            }
+        });
+
+        avanzar.setText("Siguiente");
+        avanzar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                avanzarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Anterior");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         archivo.setText("Archivo");
 
@@ -172,42 +214,66 @@ public class Interfaz1 extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
+                        .addGap(52, 52, 52)
                         .addComponent(gen_automatas, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(73, 73, 73)
                         .addComponent(analizar_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(209, 209, 209)
+                                .addComponent(avanzar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(25, 25, 25))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(613, Short.MAX_VALUE))
+                        .addComponent(imagenes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(22, 22, 22)
+                            .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(gen_automatas, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
-                    .addComponent(analizar_entrada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(17, 17, 17)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(imagenes, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(avanzar, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(gen_automatas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(analizar_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         pack();
@@ -233,15 +299,45 @@ public class Interfaz1 extends javax.swing.JFrame {
         Analizadores.Sintactico pars;
         try {
             pars=new Analizadores.Sintactico(new Analizadores.Lexico(new StringReader(entrada.getText())));
-            pars.parse();        
+            pars.parse();      
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,"No se ha seleccionado \n   ningun archivo de entrada ");
         }
+        
     }//GEN-LAST:event_gen_automatasActionPerformed
 
     private void analizar_entradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizar_entradaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_analizar_entradaActionPerformed
+
+    private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
+        String opcion = (String) combo.getSelectedItem();
+        contador = 0;
+        if(null != opcion)switch (opcion) {
+            case "Arboles":
+                SelectArboles(contador);
+                break;
+            case "Siguientes":
+                SelectSiguientes(contador);
+                break;
+            case "Transiciones":
+                SelectTransiciones(contador);
+                break;
+            case "Automatas":
+                SelectAutomatas(contador);
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_comboActionPerformed
+
+    private void avanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_avanzarActionPerformed
+        Avanzar();
+    }//GEN-LAST:event_avanzarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Retroceder();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void open()  throws IOException {
 
@@ -285,18 +381,117 @@ public class Interfaz1 extends javax.swing.JFrame {
         }
     }
        
+    private void SelectArboles(int numero){
+        if(!RutasArboles.isEmpty()){
+            ImageIcon ImgIcon = new ImageIcon(RutasArboles.get(numero));
+            Icon icono = new ImageIcon(ImgIcon.getImage().getScaledInstance(imagenes.getWidth(),imagenes.getHeight(),Image.SCALE_DEFAULT));
+            imagenes.setIcon(icono);
+            name.setText(RutasArboles.get(numero));
+        }
+    }
     
-    public void listanombrearbol(String nombre) {
-        nombreArbol.add(nombre);
+    private void SelectSiguientes(int numero){
+        if(!RutasSiguientes.isEmpty()){
+            ImageIcon ImgIcon = new ImageIcon(RutasSiguientes.get(numero));
+            Icon icono = new ImageIcon(ImgIcon.getImage().getScaledInstance(imagenes.getWidth(),imagenes.getHeight(),Image.SCALE_DEFAULT));
+            imagenes.setIcon(icono);
+            name.setText(RutasSiguientes.get(numero));
+        }
+    }
+    
+    private void SelectTransiciones(int numero){
+        if(!RutasTransiciones.isEmpty()){
+            ImageIcon ImgIcon = new ImageIcon(RutasTransiciones.get(numero));
+            Icon icono = new ImageIcon(ImgIcon.getImage().getScaledInstance(imagenes.getWidth(),imagenes.getHeight(),Image.SCALE_DEFAULT));
+            imagenes.setIcon(icono);
+            name.setText(RutasTransiciones.get(numero));
+        }
+    }
+    
+    private void SelectAutomatas(int numero){
+        if(!RutasAutomatas.isEmpty()){
+            ImageIcon ImgIcon = new ImageIcon(RutasAutomatas.get(numero));
+            Icon icono = new ImageIcon(ImgIcon.getImage().getScaledInstance(imagenes.getWidth(),imagenes.getHeight(),Image.SCALE_DEFAULT));
+            imagenes.setIcon(icono);
+            name.setText(RutasAutomatas.get(numero));
+        }
+    }
+    
+    public void LlenarCombo(){
+        String [] agg = {"Arboles","Siguientes","Transiciones","Automatas"};
+        for(String f: agg){
+            combo.addItem(f);
+        }
+    }
+    
+    public void Avanzar(){
+        String opcion = (String) combo.getSelectedItem();
+        contador++;
+        if(null != opcion)switch (opcion) {
+            case "Arboles":
+                if(contador == RutasArboles.size()){ 
+                    contador = 0;
+                }
+                SelectArboles(contador);
+                break;
+            case "Siguientes":
+                if(contador == RutasSiguientes.size()){
+                    contador = 0;
+                }
+                SelectSiguientes(contador);
+                break;
+            case "Transiciones":
+                if(contador == RutasTransiciones.size()){
+                    contador = 0;
+                }
+                SelectTransiciones(contador);
+                break;
+            case "Automatas":
+                if(contador == RutasAutomatas.size()){
+                    contador = 0;
+                }
+                SelectAutomatas(contador);
+                break;
+            default:
+                break;
+        }
+       
+    }
+    
+    public void Retroceder(){
+        String opcion = (String) combo.getSelectedItem();
+        contador--;
+        if(null != opcion)switch (opcion) {
+            case "Arboles":
+                if(contador == -1){
+                    contador = RutasArboles.size()-1;
+                }
+                SelectArboles(contador);
+                break;
+            case "Siguientes":
+                if(contador == -1){
+                    contador = RutasSiguientes.size()-1;
+                }
+                SelectSiguientes(contador);
+                break;
+            case "Transiciones":
+                if(contador == -1){
+                    contador = RutasTransiciones.size()-1;
+                }
+                SelectTransiciones(contador);
+                break;
+            case "Automatas":
+                if(contador == -1){
+                    contador = RutasAutomatas.size()-1;
+                }
+                SelectAutomatas(contador);
+                break;
+            default:
+                break;
+        }
+       
     }
 
-    public void listanombrefollow(String nombre) {
-        nombreFollow.add(nombre);
-    }
-
-    public void listanombreTransicion(String nombre) {
-        nombretrans.add(nombre);
-    }
     /**
      * @param args the command line arguments
      */
@@ -326,6 +521,17 @@ public class Interfaz1 extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Interfaz1.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(Interfaz1.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(Interfaz1.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedLookAndFeelException ex) {
+                Logger.getLogger(Interfaz1.class.getName()).log(Level.SEVERE, null, ex);
+            }
             new Interfaz1().setVisible(true);
         });
     }
@@ -334,11 +540,15 @@ public class Interfaz1 extends javax.swing.JFrame {
     private javax.swing.JMenuItem abrir;
     private javax.swing.JButton analizar_entrada;
     private javax.swing.JMenu archivo;
+    private javax.swing.JButton avanzar;
+    public javax.swing.JComboBox<String> combo;
     public static javax.swing.JTextArea entrada;
     private javax.swing.JButton gen_automatas;
     private javax.swing.JMenuItem generar;
     private javax.swing.JMenuItem guardar;
     private javax.swing.JMenuItem guardar_como;
+    private javax.swing.JLabel imagenes;
+    private javax.swing.JButton jButton1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -358,5 +568,6 @@ public class Interfaz1 extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea2;
+    public javax.swing.JLabel name;
     // End of variables declaration//GEN-END:variables
 }

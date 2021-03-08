@@ -5,55 +5,42 @@
  */
 package Clases;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.LinkedList;
+
 /**
  *
  * @author diego
  */
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-
-public class Tabla_Follow {
-        public void TablaFollow(ArrayList<Lista_Follow> Aceptacion,String nombre) throws IOException {
+public class Generar_AFD {
+    
+    public void AFD(String nombre, LinkedList<Transiciones> transiciones) throws FileNotFoundException, IOException{
         String Contenido;
-        Contenido ="digraph G{ "
-                + "node[shape= filled, style= filled, fontname=\"Times New Roman\",color=\"white\", fillcolor=\"#90EE90\"] "
-                + "nodotable[ label =<"
-                + "<table cellpadding='10' border = '1' align='center'>"
-                + "<tr><td colspan=\"10\">TABLA DE SIGUIENTES</td></tr>"
-                + "<tr><td>Hoja</td><td>Numero de hoja</td><td>Siguientes</td></tr>";
-
-        String CadTokens = "";
-        String tempotk;
-        for (int i = 0; i < Aceptacion.size(); i++) {
-            tempotk = " ";
-            tempotk = "<tr>"
-                    + "<td>" + Aceptacion.get(i).getHoja()
-                    + "</td>"
-                    + "<td>"
-                    + String.valueOf(Aceptacion.get(i).getNumero())
-                    + "</td>"
-                    + "<td>" + Aceptacion.get(i).getFollow()
-                    + "</td>"
-                    + "</tr>";
-            CadTokens = CadTokens + tempotk;
-        }
-        Contenido = Contenido + CadTokens
-                + "</table>>]"
-                + "}";
+        Contenido ="digraph G { \n"
+                + "rankdir=LR;"
+                + "node [shape= circle, style= filled, fontname=\"Times New Roman\", "
+                + "color=\"white\", fillcolor=\"#90EE90\"] \n";
         
+        String aux = "";
+        for (Transiciones trans: transiciones) {
+            aux = aux +trans.inicio+"->"+trans.fin+"[label =\""+trans.alfabeto+"\"];\n";
+        }
+        aux = aux +"}";
+        Contenido = Contenido + aux;
         File archivo;
         PrintWriter Escribir;
         String ruta;
-        File arbol = new File("SIGUIENTES_201903865");
+        File arbol = new File("AFD_201903865");
         if(arbol.exists()){
             archivo = new File(arbol.getAbsolutePath()+"/"+nombre+".dot");
             archivo.createNewFile();
             ruta = arbol.getAbsolutePath()+"/"+nombre;
-            Interfaz1.RutasSiguientes.add(ruta+".png");
+            Interfaz1.RutasAutomatas.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Contenido);
             Escribir.close();
@@ -63,7 +50,7 @@ public class Tabla_Follow {
             archivo = new File(arbol.getAbsolutePath()+"/"+nombre+".dot");
             archivo.createNewFile();
             ruta = arbol.getAbsolutePath()+"/"+nombre;
-            Interfaz1.RutasSiguientes.add(ruta+".png");
+            Interfaz1.RutasAutomatas.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Contenido);
             Escribir.close();
