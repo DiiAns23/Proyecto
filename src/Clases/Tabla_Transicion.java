@@ -41,7 +41,6 @@ public class Tabla_Transicion {
         }
         aux = aux +"</tr>\n";
         
-<<<<<<< Updated upstream
         for(Transiciones transis: transiciones){
             aux = aux +"<tr>\n <td>"+ transis.getInicio()+"</td>";
             for(String a: encabezado){
@@ -57,21 +56,6 @@ public class Tabla_Transicion {
                 +"</table>>]\n"
                 + "}";
         Contenido = Contenido + aux;
-=======
-        tempotk = "<tr>";
-        CadTokens =CadTokens +tempotk + "<td>" + S
-                + "</td>"
-<<<<<<< Updated upstream
-                + "</tr>";;
-=======
-                + "</tr>";
->>>>>>> Stashed changes
-
-         Contenido = Contenido + CadTokens
-                + "</table>>]}";
-
-
->>>>>>> Stashed changes
         File archivo;
         PrintWriter Escribir;
         String ruta;
