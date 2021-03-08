@@ -21,41 +21,51 @@ import java.util.LinkedList;
 
 public class Tabla_Transicion {
 
-    @SuppressWarnings("empty-statement")
-    public void Tabla(LinkedList<Transiciones> transiciones, LinkedList<String> encabezado, String nombre) throws IOException {
+    public void Tabla(String S, LinkedList<String> encabezado, String nombre) throws IOException {
 
         String Contenido;
-        Contenido ="digraph G { node [rankdir=TB,shape= filled, style= filled, fontname=\"Times New Roman\", \n"
-                + "color=\"white\", fillcolor=\"#90EE90\"] nodotable \n"
-                + "[ label =<<table cellpadding='10' border = '1' align='center'> \n"
-                + "<tr>\n"
-                + "<td colspan='"
-                +(encabezado.size()+1)
-                + "'>TABLA DE TRANSICIONES</td>\n"
-                + "</tr>\n"
-                + "<tr><td>Estado</td>\n";
+        Contenido ="digraph G { node [rankdir=TB,shape= filled, style= filled, fontname=\"Times New Roman\", "
+                + "color=\"white\", fillcolor=\"#90EE90\"] nodotable "
+                + "[ label =<<table cellpadding='10' border = '1' align='center'>"
+                + "<tr>"
+                + "<td colspan=\"3\">TABLA DE TRANSICIONES</td>"
+                + "</tr>"
+                + "<tr><td>Hoja"
+                + "</td>"
+                + "<td>Numero de hoja"
+                + "</td>"
+                + "<td>Siguientes"
+                + "</td>"
+                + "</tr>";
 
-        String aux = "";
-        for(String a: encabezado){
-            aux = aux +"<td>"+a+"</td> \n";
-        }
-        aux = aux +"</tr>\n";
+        String CadTokens = "";
+        String tempotk;
         
-        for(Transiciones transis: transiciones){
-            aux = aux +"<tr>\n <td>"+ transis.getInicio()+"</td>";
-            for(String a: encabezado){
-                if(a.equals(transis.alfabeto)){
-                    aux = aux +"<td>"+transis.fin+"</td>\n";
-                }else{
-                    aux = aux +"<td> --- </td>\n";
-                }
-            }
-            aux = aux + "</tr>\n";
+        tempotk = "";
+        tempotk = "<tr>";
+        for (int i = 0; i < encabezado.size(); i++) {
+
+            tempotk = tempotk + "<td>" + ""
+                    + "</td>"
+                    + "<td>"
+                    + encabezado.get(i)
+                    + "</td>";
+
+            CadTokens = CadTokens + tempotk;
+
         }
-        aux = aux 
-                +"</table>>]\n"
-                + "}";
-        Contenido = Contenido + aux;
+
+        CadTokens = CadTokens + "</tr>";
+        
+        tempotk = "<tr>";
+        CadTokens =CadTokens +tempotk + "<td>" + S
+                + "</td>"
+                + "</tr>";;
+
+         Contenido = Contenido + CadTokens
+                + "</table>>]}";
+
+
         File archivo;
         PrintWriter Escribir;
         String ruta;
@@ -64,7 +74,6 @@ public class Tabla_Transicion {
             archivo = new File(arbol.getAbsolutePath()+"/"+nombre+".dot");
             archivo.createNewFile();
             ruta = arbol.getAbsolutePath()+"/"+nombre;
-            Interfaz1.RutasTransiciones.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Contenido);
             Escribir.close();
@@ -74,16 +83,15 @@ public class Tabla_Transicion {
             archivo = new File(arbol.getAbsolutePath()+"/"+nombre+".dot");
             archivo.createNewFile();
             ruta = arbol.getAbsolutePath()+"/"+nombre;
-            Interfaz1.RutasTransiciones.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Contenido);
             Escribir.close();
         }
         
-        String text = "dot -Tpng " + ruta+".dot" + " -o " + ruta + ".png";
+        String text = "dot -Tpdf " + ruta+".dot" + " -o " + ruta + ".pdf";
         CMD(text);
-        File borrar = new File (ruta+".dot");
-        borrar.delete();
+        //File borrar = new File (ruta+".dot");
+        //borrar.delete();
     }
      
     //Aqui se hace el proceso de consola para ejecutar el archivo .dot

@@ -25,7 +25,6 @@ public class sym {
   public static final int error = 1;
   public static final int INTERR = 10;
   public static final int DIP = 3;
-  public static final int ASCII = 23;
   public static final int RAN = 17;
   public static final int ENTERO = 16;
   public static final int DPUNTOS = 8;
@@ -55,8 +54,7 @@ public class sym {
   "ALFAMIN",
   "COMILLA",
   "COMA",
-  "DEC",
-  "ASCII"
+  "DEC"
   };
 }
 

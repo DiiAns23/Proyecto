@@ -23,7 +23,6 @@ public class Generar_Arbol_ER {
             archivo = new File(arbol.getAbsolutePath()+"/"+titulo+".dot");
             archivo.createNewFile();
             ruta = arbol.getAbsolutePath()+"/"+titulo;
-            Interfaz1.RutasArboles.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Texto);
             Escribir.close();
@@ -33,7 +32,6 @@ public class Generar_Arbol_ER {
             archivo = new File(arbol.getAbsolutePath()+"/"+titulo+".dot");
             archivo.createNewFile();
             ruta = arbol.getAbsolutePath()+"/"+titulo;
-            Interfaz1.RutasArboles.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Texto);
             Escribir.close();
