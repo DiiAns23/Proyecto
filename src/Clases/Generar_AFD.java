@@ -28,7 +28,7 @@ public class Generar_AFD {
         
         String aux = "";
         for (Transiciones trans: transiciones) {
-            aux = aux +trans.inicio+"->"+trans.fin+"[label =\""+trans.alfabeto+"\"];\n";
+            aux = aux +trans.getInicio()+"->"+trans.getFin()+"[label =\""+trans.getAlfabeto()+"\"];\n";
         }
         aux = aux +"}";
         Contenido = Contenido + aux;

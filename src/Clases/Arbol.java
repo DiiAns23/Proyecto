@@ -7,6 +7,7 @@ package Clases;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import Errores.Errores;
 
 /**
  *
@@ -60,15 +61,21 @@ public class Arbol {
         this.index = inde;
         this.indez = folow;
         raiz = Agregar();
+        
         ArbolER(nombres);
         Follow(raiz);
+        
         Tabla_Follow generar = new Tabla_Follow();
         generar.TablaFollow(Siguientes, nombres.get(indez));
+        
         estadoinicial();
-        Tabla_Transicion graficar = new Tabla_Transicion();
-        graficar.Tabla(transiciones, encabezado,nombres.get(indez));
+        
         Generar_AFD afd = new Generar_AFD();
         afd.AFD(nombres.get(indez), transiciones);
+        
+        Tabla_Transicion graficar = new Tabla_Transicion();
+        graficar.Tabla(transiciones, encabezado,nombres.get(indez), estados);
+        
         Siguientes.clear();
         punterodelista = 0;
     }
@@ -241,7 +248,7 @@ public class Arbol {
     }
 
     //Tabla Follows
-    public static LinkedList<String> f = new LinkedList();
+    public static LinkedList<String> auxiliar = new LinkedList();
 
     public void Follow(Nodo raiz) {
         if (raiz != null) {
@@ -277,13 +284,13 @@ public class Arbol {
         for (int i = 0; i < separar.length(); i++) {
             caracter = separar.charAt(i);
             if (Character.isDigit(caracter)) {
-                f.add(Character.toString(caracter));
+                auxiliar.add(Character.toString(caracter));
             }
         }
         String a;
-        for (int vector = 0; vector < f.size(); vector++) {
+        for (int vector = 0; vector < auxiliar.size(); vector++) {
             for (int i = 0; i < Siguientes.size(); i++) {
-                if (Siguientes.get(i).getNumero() == Integer.parseInt(f.get(vector))) {
+                if (Siguientes.get(i).getNumero() == Integer.parseInt(auxiliar.get(vector))) {
                     if (Siguientes.get(i).getFollow().equals("")) {
                         a = ult;
                         Siguientes.get(i).setFollow(a);
@@ -297,7 +304,7 @@ public class Arbol {
                 }
             }
         }
-        f.clear();
+        auxiliar.clear();
     }
 
     public void agregar_follow(String hoja, int Numero, String sus_siguientes) {
@@ -314,12 +321,8 @@ public class Arbol {
     public static int num_estado = 1;
     
     
-    public void estadoinicial() {
-        Encabezado();
-    }
-    
         
-    public void Encabezado() {
+    public void estadoinicial() {
         Lista_Follow_2 n;
         for (int follow = 0; follow <Siguientes.size(); follow++) {
             String hoja = Siguientes.get(follow).getHoja();

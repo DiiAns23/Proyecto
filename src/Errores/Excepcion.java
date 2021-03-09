@@ -24,9 +24,6 @@ public class Excepcion {
     
     @Override
     public String toString(){
-        return this.tipo +": "+this.descripcion +"["+ this.linea+", "+this.columna+"]";
+        return this.tipo +": "+this.descripcion +" ["+ this.linea+", "+this.columna+"] ";
     }
-    
-    
-    
 }

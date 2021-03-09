@@ -7,13 +7,13 @@ import Errores.*;
 parser code 
 {:
     public static Expresion_Regular er = new Expresion_Regular();
-    public ArrayList<Excepcion> Errores = new ArrayList();
+    public ArrayList<Excepcion> ErroresSintacticos = new ArrayList();
     
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/ 
     public void syntax_error(Symbol s){ 
-        Errores.add(new Excepcion("Sintactico", "Error en la sintaxis detectado. Se detecto:" +s.value, s.left+"",s.right+""));
+       new Errores("Sintactico", "Error en la sintaxis detectado. Se detecto: " +s.value, s.left+"",s.right+"");
     } 
 
     /**
@@ -21,19 +21,13 @@ parser code
      * en el que ya no es posible una recuperación de errores.
      **/
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        System.out.println("No se puede recuparar el error Sintactico en la Linea: " + 
-        (s.left)+ " Columna "+s.right+". Componente " + s.value + 
-        " no se reconoce."); 
+        new Errores("Sintactico", "Error irrecuperable. Se detecto:" +s.value, s.left+"",s.right+"");
     }  
-
-    public ArrayList<Excepcion> getErrores(){
-    return Errores;
-}
 :} 
 
 terminal String CONJUNTO;
 terminal String DIP,ASIG,NACION,LLAVEI,LLAVED,DPUNTOS,PUNTO,INTERR,PTCOMA,BARRA,MAS,POR,PORC;
-terminal String ENTERO,RAN,ALFAMAY,ALFAMIN,COMILLA,COMA,DEC,ASCII;
+terminal String ENTERO,RAN,ALFAMAY,ALFAMIN,COMILLA,COMA,COMILLASIMPLE,INVERBARRA,ASCII,TODO;
 non terminal ini,expresion,expresion2,conjuntos,listainstrucciones;
 non terminal instrucciones,n_exp,alfabeto,conj,conj2;
 non terminal instruccion,combinacion,comilla,xdxdxd,lect,lect2;
@@ -44,7 +38,7 @@ start with ini;
 ini::=instrucciones;
 
 instrucciones ::= 
-   LLAVEI  listainstrucciones LLAVED
+   LLAVEI  listainstrucciones LLAVED {:Errores.ReporteErrores();:}
 ; 
 
 listainstrucciones::=
@@ -57,7 +51,7 @@ instruccion ::=
  | n_exp 
  | PORC PORC {:er.Separacion();:}
  | lect
- | error PTCOMA
+ | error PTCOMA 
 ;
 
 conj::=
@@ -65,16 +59,18 @@ conj::=
 ;
 
 conjuntos ::=   
-    ALFAMIN:b DIP ALFAMIN:c  
- |  ALFAMAY:b DIP ALFAMAY:c 
- |  ENTERO:b  DIP ENTERO:c   
+    ALFAMIN DIP ALFAMIN
+ |  ALFAMAY DIP ALFAMAY 
+ |  ENTERO  DIP ENTERO   
+ |  ASCII   DIP ASCII
  |  xdxdxd
 ;
 
 xdxdxd::=
-    ALFAMIN:b  conj2
- |  ALFAMAY:b  conj2
- |  ENTERO:b   conj2
+    ALFAMIN  conj2
+ |  ALFAMAY  conj2
+ |  ENTERO   conj2
+ |  ASCII    conj2
 ;
 
 conj2::=
@@ -82,6 +78,7 @@ conj2::=
  |  ALFAMIN:b 
  |  ALFAMAY:b 
  |  ENTERO:b  
+ |  ASCII
  |  
 ;
 
@@ -91,7 +88,8 @@ n_exp ::=
 ;
 
 expresion ::=
-    INTERR:a alfabeto:b         {:RESULT=(String)a+(String)b;:}
+    INTERR:a comilla:b          {:RESULT=(String)a+(String)b;:}
+ |  INTERR:a alfabeto:b         {:RESULT=(String)a+(String)b;:}
  |  POR:a expresion2:b          {:RESULT=(String)a+(String)b;:}
  |  POR:a alfabeto:b            {:RESULT=(String)a+(String)b;:}
  |  PUNTO:a combinacion:b       {:RESULT=(String)a+(String)b;:}
@@ -122,17 +120,32 @@ alfabeto::=
     LLAVEI RAN:a LLAVED     {:RESULT="{"+(String)a+"}";:};
 
 comilla::=
-    COMILLA:a RAN:b COMILLA:c             {:RESULT=(String)a+(String)b+(String)c;:}
- |  COMILLA:a ENTERO:b COMILLA:c          {:RESULT=(String)a+(String)b+(String)c;:}
- |  COMILLA:a PUNTO:b  COMILLA:c          {:RESULT=(String)a+(String)b+(String)c;:}
- |  COMILLA:a ASCII:b  COMILLA:c          {:RESULT=(String)a+(String)b+(String)c;:}
+    COMILLA:a RAN:b COMILLA:c               {:RESULT=(String)a+(String)b+(String)c;:}
+ |  COMILLA:a ENTERO:b COMILLA:c            {:RESULT=(String)a+(String)b+(String)c;:}
+ |  COMILLA:a PUNTO:b  COMILLA:c            {:RESULT=(String)a+(String)b+(String)c;:}
+ |  COMILLA:a ASCII:b  COMILLA:c            {:RESULT=(String)a+(String)b+(String)c;:}
+ |  INVERBARRA:a COMILLASIMPLE:b            {:RESULT=(String)a+(String)b;:}
+ |  INVERBARRA:a ALFAMIN:b                  {:RESULT=(String)a+(String)b;:}
+ |  COMILLA ASIG:a  COMILLA                 {:RESULT=(String)a;:}
+ |  COMILLA DPUNTOS:a  COMILLA              {:RESULT=(String)a;:}
+ |  COMILLA DIP:a  COMILLA                  {:RESULT=(String)a;:}
+ |  COMILLA NACION:a  COMILLA               {:RESULT=(String)a;:}
+ |  COMILLA LLAVEI:a  COMILLA               {:RESULT=(String)a;:}
+ |  COMILLA LLAVED:a  COMILLA               {:RESULT=(String)a;:}
+ |  COMILLA INTERR:a  COMILLA               {:RESULT=(String)a;:}
+ |  COMILLA PTCOMA:a  COMILLA               {:RESULT=(String)a;:}
+ |  COMILLA BARRA:a  COMILLA                {:RESULT=(String)a;:}
+ |  COMILLA MAS:a  COMILLA                  {:RESULT=(String)a;:}
+ |  COMILLA POR:a  COMILLA                  {:RESULT=(String)a;:}
+ |  COMILLA PORC:a  COMILLA                 {:RESULT=(String)a;:}
+ |  COMILLA  COMILLA                        {:RESULT = " ";:}
 ;
 
+
 lect::=
-    RAN:a   DPUNTOS COMILLA lect2:b COMILLA PTCOMA 
+    RAN:a   DPUNTOS COMILLA lect2 COMILLA PTCOMA 
 ;
 
 lect2::=
-    RAN:b   {:RESULT=(String)b;:}
- |  DEC:b   {:RESULT=(String)b;:}
+    TODO:b   {:RESULT=(String)b;:} 
 ;

@@ -20,9 +20,9 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 
 public class Tabla_Transicion {
-
+    LinkedList<LinkedList> auxiliar = new LinkedList();
     @SuppressWarnings("empty-statement")
-    public void Tabla(LinkedList<Transiciones> transiciones, LinkedList<String> encabezado, String nombre) throws IOException {
+    public void Tabla(LinkedList<Transiciones> transis, LinkedList<String> encabezado, String nombre, LinkedList<Estado> estados) throws IOException {
 
         String Contenido;
         Contenido ="digraph G { node [rankdir=TB,shape= filled, style= filled, fontname=\"Times New Roman\", \n"
@@ -41,19 +41,44 @@ public class Tabla_Transicion {
         }
         aux = aux +"</tr>\n";
         
-        for(Transiciones transis: transiciones){
-            aux = aux +"<tr>\n <td>"+ transis.getInicio()+"</td>";
-            for(String a: encabezado){
-                if(a.equals(transis.alfabeto)){
-                    aux = aux +"<td>"+transis.fin+"</td>\n";
-                }else{
-                    aux = aux +"<td> --- </td>\n";
-                    
-                    
+        for(Estado estado: estados){
+            aux = aux +"<tr>\n <td>"+ estado.getEstado()+estado.getSiguientes()+"</td>";
+            LinkedList<String> aux1 = new LinkedList();
+            aux1.add(estado.getEstado());
+            for(String alfabeto: encabezado){
+                for(Transiciones transicion: transis){
+                    if(transicion.getInicio().equals(estado.getEstado())){
+                        if(transicion.getAlfabeto().equals(alfabeto)){
+                            aux = aux +"<td>"+transicion.getFin()+"</td>\n";
+                            aux1.add(transicion.getFin());
+                            transis.remove(transicion);
+                            break;
+                        }else{
+                            aux = aux +"<td>---</td>\n";    
+                            aux1.add("---");
+                            break;
+                        }
+                    }
                 }
             }
             aux = aux + "</tr>\n";
+            auxiliar.add(aux1);
         }
+              
+//        for(Transiciones transis: transiciones){
+//            aux = aux +"<tr>\n <td>"+ transis.getInicio()+"</td>";
+//            for(String a: encabezado){
+//                if(a.equals(transis.alfabeto)){
+//                    aux = aux +"<td>"+transis.fin+"</td>\n";
+//                }else{
+//                    aux = aux +"<td> --- </td>\n";
+//                    
+//                }
+//            }
+//            aux = aux + "</tr>\n";
+//        }
+        
+        
         aux = aux 
                 +"</table>>]\n"
                 + "}";

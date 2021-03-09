@@ -301,7 +301,7 @@ public class Interfaz1 extends javax.swing.JFrame {
             pars=new Analizadores.Sintactico(new Analizadores.Lexico(new StringReader(entrada.getText())));
             pars.parse();      
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,"No se ha seleccionado \n   ningun archivo de entrada ");
+            
         }
         
     }//GEN-LAST:event_gen_automatasActionPerformed
@@ -342,7 +342,7 @@ public class Interfaz1 extends javax.swing.JFrame {
     private void open()  throws IOException {
 
         JFileChooser JFC = new JFileChooser();
-        JFC.setFileFilter(new FileNameExtensionFilter("todos los archivos *","olc","OLC"));
+        JFC.setFileFilter(new FileNameExtensionFilter(".olc",".er","olc","OLC"));
         int abrir = JFC.showDialog(null, "Abrir");
         if (abrir == JFileChooser.APPROVE_OPTION) {
 
@@ -352,7 +352,7 @@ public class Interfaz1 extends javax.swing.JFrame {
 
                 File archivo = JFC.getSelectedFile();
                 String rut = JFC.getSelectedFile().getAbsolutePath();
-                if (rut.endsWith(".OLC")|| rut.endsWith(".olc")) {
+                if (rut.endsWith(".OLC")|| rut.endsWith(".olc") || rut.endsWith(".er") ) {
                     FR = new FileReader(archivo);
                     BR = new BufferedReader(FR);
                     String linea;

@@ -36,39 +36,57 @@ public class Expresion_Regular {
         char caracter = ' ';
         int estado = 0;
 
-        //Aqui recorro la linkedlist que contiene la ER 
+        //Se recorre la lista que contiene las cadenas de Expresiones Regulaes
         for (int i = 0; i < ER.size(); i++) {
             agregar(".", ".");
             er = ER.get(i);
-            //Aqui separo la ER de caracter por caracter y lo guardo en una linkedlist de caracteres
+            //Se separa caracter por caracter la Expresion Regular
             for (int j = 0; j < er.length(); j++) {
                 caracter = er.charAt(j);
                 switch (estado) {
                     case 0:
-                        if (caracter == (char) 46) {
-                            agregar(Character.toString(caracter), ".");
-                            estado = 0;
-                        } else if (caracter == (char) 124) {
-                            agregar(Character.toString(caracter), "|");
-                            estado = 0;
-                        } else if (caracter == (char) 63) {
-                            agregar(Character.toString(caracter), "?");
-                            estado = 0;
-                        } else if (caracter == (char) 42) {
-                            agregar(Character.toString(caracter), "*");
-                            estado = 0;
-                        } else if (caracter == (char) 43) {
-                            agregar(Character.toString(caracter), "+");
-                            estado = 0;
-                        } else if (caracter == (char) 34) {
-                            estado = 1;
-                        } else if (caracter == (char) 123) {
-                            estado = 2;
+                        switch (caracter) {
+                            case (char) 46:
+                                agregar(Character.toString(caracter), ".");
+                                estado = 0;
+                                break;
+                            case (char) 124:
+                                agregar(Character.toString(caracter), "|");
+                                estado = 0;
+                                break;
+                            case (char) 63:
+                                agregar(Character.toString(caracter), "?");
+                                estado = 0;
+                                break;
+                            case (char) 42:
+                                agregar(Character.toString(caracter), "*");
+                                estado = 0;
+                                break;
+                            case (char) 43:
+                                agregar(Character.toString(caracter), "+");
+                                estado = 0;
+                                break;
+                            case (char) 92:
+                                estado = 3;
+                                break;
+                            case (char) 34:
+                                estado = 1;
+                                break;
+                            case (char) 123:
+                                estado = 2;
+                                break;
+                            default:
+                                break;
                         }
                         break;
                     case 1:
                         if (caracter != (char) 34) {
-                            cc += caracter;
+                            if(caracter == (char) 32){
+                                cc += "espacio";
+                            }else{
+                                cc += caracter;
+                            }
+                            
                         } else {
                             agregar(cc, "cadena");
                             cc = "";
@@ -82,6 +100,24 @@ public class Expresion_Regular {
                             agregar(cc, "identificador");
                             cc = "";
                             estado = 0;
+                        }
+                        break;
+                        
+                    case 3:
+                        switch (caracter) {
+                            case (char) 110:
+                                agregar("s", "cadena");
+                                estado = 0;
+                                break;
+                            case (char) 39:
+                                agregar("c", "cadena");
+                                estado = 0;
+                                break;
+                            case (char) 34:
+                                agregar("d", "cadena");
+                                break;
+                            default:
+                                break;
                         }
                         break;
                 }
