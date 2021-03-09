@@ -8,6 +8,7 @@ package Analizadores;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
+  public static final int INVERBARRA = 23;
   public static final int PUNTO = 9;
   public static final int NACION = 5;
   public static final int PORC = 15;
@@ -17,15 +18,16 @@ public class sym {
   public static final int LLAVED = 7;
   public static final int POR = 14;
   public static final int COMA = 21;
+  public static final int COMILLASIMPLE = 22;
   public static final int EOF = 0;
   public static final int COMILLA = 20;
   public static final int ALFAMIN = 19;
-  public static final int DEC = 22;
+  public static final int TODO = 25;
   public static final int ALFAMAY = 18;
   public static final int error = 1;
   public static final int INTERR = 10;
   public static final int DIP = 3;
-  public static final int ASCII = 23;
+  public static final int ASCII = 24;
   public static final int RAN = 17;
   public static final int ENTERO = 16;
   public static final int DPUNTOS = 8;
@@ -55,8 +57,10 @@ public class sym {
   "ALFAMIN",
   "COMILLA",
   "COMA",
-  "DEC",
-  "ASCII"
+  "COMILLASIMPLE",
+  "INVERBARRA",
+  "ASCII",
+  "TODO"
   };
 }
 

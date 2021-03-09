@@ -10,9 +10,9 @@ package Clases;
  * @author diego
  */
 public class Transiciones {
-    public String inicio;
-    public String alfabeto;
-    public String fin;
+    private String inicio;
+    private String alfabeto;
+    private String fin;
     
     public Transiciones(String inicio, String alfabeto, String fin){
         this.inicio = inicio;

@@ -8,12 +8,12 @@ CONJ: mayus -> A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z;
 CONJ: simbols - > #~@;
 
 // COMENTARIO
-
+fecha -> . {num} . {num} . "/" . {num} . {num} . "/" . {num} . {num} . {num} {num}; 
 igusername -> . . "@" | {minus} {mayus} * | | | {minus} {mayus} {num} "_" ; // en infijo es "@".({minus}|{mayus}).({minus}|{mayus}|{num}|"_")*
 <!
        Expresion Regular para una fecha (forma sencilla)
 !>
-fecha -> . {num} . {num} . "/" . {num} . {num} . "/" . {num} . {num} . {num} {num}; 
+
 erAzar -> . + {simbols} + | {minus} {mayus};
 
 %%
