@@ -28,7 +28,7 @@ COMENTUNILINEA      =   ("//".*\r\n)|("//".*\n)|("//".*\r)
 COMENTMULTILINEA     =  \<\!([^!\>]|[^!]\>|\![^\>])*\!\>
 CADENACOMILLASDOBLES = [\"]
 COMILLASIMPLE = [\']
-TODO = [.*]
+TODO = [^.*]
 ESPACIO = [\s+]
 INVERBARRA = [\\]
 ASCII =  [!-$&<-=@/]
@@ -78,7 +78,5 @@ RAN=([a-zA-Z_])[a-zA-Z0-9_]*
 
 
 . {
-            System.out.println("Error cometido en Lexico");
             new Errores("Lexico", "Error lexico detectado. Se detecto:" +yytext(),yyline+"",yychar+"");
-
 }

@@ -45,6 +45,7 @@ public class Interfaz1 extends javax.swing.JFrame {
     public static LinkedList<String> RutasSiguientes = new LinkedList<>();
     public static LinkedList<String> RutasTransiciones = new LinkedList<>();
     public static LinkedList<String> RutasAutomatas = new LinkedList<>();
+    public static LinkedList<String> RutasAFND = new LinkedList<>();
     
     public static LinkedList<String> namesArboles = new LinkedList<>();
     public static LinkedList<String> nameSiguientes = new LinkedList<>();
@@ -292,14 +293,15 @@ public class Interfaz1 extends javax.swing.JFrame {
     }//GEN-LAST:event_guardarActionPerformed
 
     private void guardar_comoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardar_comoActionPerformed
-        // TODO add your handling code here:
+        Guardar();
     }//GEN-LAST:event_guardar_comoActionPerformed
 
     private void gen_automatasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gen_automatasActionPerformed
         Analizadores.Sintactico pars;
         try {
             pars=new Analizadores.Sintactico(new Analizadores.Lexico(new StringReader(entrada.getText())));
-            pars.parse();      
+            pars.parse();   
+            JOptionPane.showMessageDialog(this, "Operacion Realizada con Exito", "", JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception ex) {
             
         }
@@ -323,8 +325,11 @@ public class Interfaz1 extends javax.swing.JFrame {
             case "Transiciones":
                 SelectTransiciones(contador);
                 break;
-            case "Automatas":
+            case "Automatas FD":
                 SelectAutomatas(contador);
+                break;
+            case "Automatas FND":
+                SelectAutomatasND(contador);
                 break;
             default:
                 break;
@@ -349,14 +354,21 @@ public class Interfaz1 extends javax.swing.JFrame {
             FileReader FR = null;
             BufferedReader BR = null;
             try {
-
                 File archivo = JFC.getSelectedFile();
                 String rut = JFC.getSelectedFile().getAbsolutePath();
                 if (rut.endsWith(".OLC")|| rut.endsWith(".olc") || rut.endsWith(".er") ) {
                     FR = new FileReader(archivo);
                     BR = new BufferedReader(FR);
                     String linea;
+                    ruta = "";
                     ruta = archivo.getAbsolutePath();
+                    RutasArboles.clear();
+                    RutasAFND.clear();
+                    RutasSiguientes.clear();
+                    RutasTransiciones.clear();
+                    RutasAutomatas.clear();
+                    combo.setSelectedItem("Ver Imagenes");
+                    imagenes.setIcon(null);
                     entrada.setText(null);
                     while ((linea = BR.readLine()) != null) {
                         entrada.setText(entrada.getText()+linea+"\n");
@@ -417,8 +429,17 @@ public class Interfaz1 extends javax.swing.JFrame {
         }
     }
     
+    private void SelectAutomatasND(int numero){
+        if(!RutasAFND.isEmpty()){
+            ImageIcon ImgIcon = new ImageIcon(RutasAFND.get(numero));
+            Icon icono = new ImageIcon(ImgIcon.getImage().getScaledInstance(imagenes.getWidth(),imagenes.getHeight(),Image.SCALE_DEFAULT));
+            imagenes.setIcon(icono);
+            name.setText(RutasAFND.get(numero));
+        }
+    }
+    
     public void LlenarCombo(){
-        String [] agg = {"Arboles","Siguientes","Transiciones","Automatas"};
+        String [] agg = {"Arboles","Siguientes","Transiciones","Automatas FD","Automatas FND"};
         for(String f: agg){
             combo.addItem(f);
         }
@@ -446,11 +467,17 @@ public class Interfaz1 extends javax.swing.JFrame {
                 }
                 SelectTransiciones(contador);
                 break;
-            case "Automatas":
+            case "Automatas FD":
                 if(contador == RutasAutomatas.size()){
                     contador = 0;
                 }
                 SelectAutomatas(contador);
+                break;
+            case "Automatas FND":
+                if(contador == RutasAFND.size()){
+                    contador = 0;
+                }
+                SelectAutomatasND(contador);
                 break;
             default:
                 break;
@@ -480,18 +507,29 @@ public class Interfaz1 extends javax.swing.JFrame {
                 }
                 SelectTransiciones(contador);
                 break;
-            case "Automatas":
+            case "Automatas FD":
                 if(contador == -1){
                     contador = RutasAutomatas.size()-1;
                 }
                 SelectAutomatas(contador);
+                break;
+            case "Automatas FND":
+                if(contador == -1){
+                    contador = RutasAFND.size()-1;
+                }
+                SelectAutomatasND(contador);
                 break;
             default:
                 break;
         }
        
     }
-
+    
+    public void Guardar(){
+        if(entrada.getText()!= null){
+            
+        }
+    }
     /**
      * @param args the command line arguments
      */

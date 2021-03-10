@@ -13,11 +13,13 @@ public class Transiciones {
     private String inicio;
     private String alfabeto;
     private String fin;
+    private String aceptacion;
     
-    public Transiciones(String inicio, String alfabeto, String fin){
+    public Transiciones(String inicio, String alfabeto, String fin, String aceptacion){
         this.inicio = inicio;
         this.alfabeto = alfabeto;
         this.fin = fin;
+        this.aceptacion = aceptacion;
     }
     
     public String getInicio(){
@@ -30,5 +32,9 @@ public class Transiciones {
     
     public String getFin(){
         return this.fin;
+    }
+    
+    public String getAceptacion(){
+        return this.aceptacion;
     }
 }
