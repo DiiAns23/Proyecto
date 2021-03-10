@@ -63,7 +63,14 @@ public class Arbol {
         raiz = Agregar();
         
         ArbolER(nombres);
+        
+        LinkedList<AFND> hola = Crear_AFND(raiz);
+        
+        Generar_AFND.AFND(nombres.get(indez),hola);
+        
+        
         Follow(raiz);
+        
         
         Tabla_Follow generar = new Tabla_Follow();
         generar.TablaFollow(Siguientes, nombres.get(indez));
@@ -71,10 +78,12 @@ public class Arbol {
         estadoinicial();
         
         Generar_AFD afd = new Generar_AFD();
-        afd.AFD(nombres.get(indez), transiciones);
+        afd.AFD(nombres.get(indez), transiciones,estados);
         
         Tabla_Transicion graficar = new Tabla_Transicion();
         graficar.Tabla(transiciones, encabezado,nombres.get(indez), estados);
+        
+        
         
         Siguientes.clear();
         punterodelista = 0;
@@ -255,9 +264,9 @@ public class Arbol {
             Follow(raiz.izquierda);
             switch (raiz.descripcion) {
                 case "+":
-                    String primero_positivo = raiz.Primeros;
-                    String ultimo_positivo = raiz.Ultimos;
-                    recorer(ultimo_positivo, primero_positivo);
+                    String primeros = raiz.Primeros;
+                    String ultimos = raiz.Ultimos;
+                    recorer(ultimos, primeros);
                     break;
 
                 case "*":
@@ -279,18 +288,14 @@ public class Arbol {
     }
 
     public void recorer(String primer, String ult) {
-        String separar = primer;
-        char caracter = ' ';
-        for (int i = 0; i < separar.length(); i++) {
-            caracter = separar.charAt(i);
-            if (Character.isDigit(caracter)) {
-                auxiliar.add(Character.toString(caracter));
-            }
+        String []separar = primer.split(",");
+        for (int i = 0; i < separar.length; i++) {
+            auxiliar.add(separar[i]);
         }
         String a;
-        for (int vector = 0; vector < auxiliar.size(); vector++) {
+        for (int x = 0; x < auxiliar.size(); x++) {
             for (int i = 0; i < Siguientes.size(); i++) {
-                if (Siguientes.get(i).getNumero() == Integer.parseInt(auxiliar.get(vector))) {
+                if (Siguientes.get(i).getNumero() == Integer.parseInt(auxiliar.get(x))) {
                     if (Siguientes.get(i).getFollow().equals("")) {
                         a = ult;
                         Siguientes.get(i).setFollow(a);
@@ -319,8 +324,6 @@ public class Arbol {
     public LinkedList<Transiciones> transiciones = new LinkedList();
     public LinkedList<String> usados = new LinkedList();
     public static int num_estado = 1;
-    
-    
         
     public void estadoinicial() {
         Lista_Follow_2 n;
@@ -348,17 +351,21 @@ public class Arbol {
         for (String b1 : b) {
             sigs.add(Integer.parseInt(b1));
         }
-        estados.add(new Estado("S0", sigs));
+        estados.add(new Estado("S0", sigs,"N"));
         Estados("S0",sigs);
         aux.clear();
         num_estado = 1;
     }
     
+    public boolean aceptacion = false;
     public void Estados(String nombre, LinkedList<Integer> siguientes){
         for (String encabezado1 : encabezado) {  
             LinkedList<Integer> auxiliar1 = new LinkedList();
             for(int siguientes1 : siguientes){
                 Lista_Follow_2 sig = aux.get(siguientes1-1);
+                if(sig.getHoja().equals("#")){
+                    aceptacion = true;
+                }
                 if(encabezado1.equals(sig.getHoja())){
                     for(int i: sig.getFollow()){
                         if(!auxiliar1.contains(i)){
@@ -371,19 +378,146 @@ public class Arbol {
             if(!auxiliar1.isEmpty()){
                 if(!usados.contains(auxiliar1.toString())){
                     String nombre2 = "S"+num_estado;
-                    estados.add(new Estado(nombre2,auxiliar1));
-                    transiciones.add(new Transiciones(nombre, encabezado1,nombre2));
+                    if(!aceptacion){
+                        estados.add(new Estado(nombre2,auxiliar1,"N"));
+                        transiciones.add(new Transiciones(nombre, encabezado1,nombre2,"N"));
+                    }
+                    else{
+                        estados.add(new Estado(nombre2,auxiliar1,"A"));
+                        transiciones.add(new Transiciones(nombre, encabezado1,nombre2,"A"));
+                        aceptacion = false;
+                    }
                     num_estado++;
                     usados.add(auxiliar1.toString());
                     Estados(nombre2,auxiliar1);
                 }else{
                     for(Estado x: estados){
                         if(x.getSiguientes().equals(auxiliar1)){
-                            transiciones.add(new Transiciones(nombre,encabezado1, x.getEstado()));
+                            if(!aceptacion){
+                                transiciones.add(new Transiciones(nombre,encabezado1, x.getEstado(),"N"));
+                            }else{
+                                transiciones.add(new Transiciones(nombre,encabezado1, x.getEstado(),"A"));
+                                aceptacion = false;
+                            }
                         }
                     }
                 }
             }
         }
-    }     
+    }
+    
+    public int contador = 0;
+    
+    public LinkedList<AFND> Crear_AFND(Nodo node){
+        LinkedList<AFND> aux = new LinkedList();
+        contador = 0;
+        if(node != null){
+            LinkedList<AFND> izq = Crear_AFND(node.izquierda);
+            LinkedList<AFND> der = Crear_AFND(node.derecha);
+            switch (node.descripcion) {
+                case "cadena":
+                case "identificador":
+                {
+                    aux.add(new AFND(contador, node.etiquetas, contador+1));
+                    aux.add(new AFND(contador + 1, "", -8));
+                    return aux;
+                }   
+                case ".":
+                {
+                    if(!node.derecha.etiquetas.equalsIgnoreCase("#")){
+                        izq.removeLast();
+                        int c = izq.size();
+                        der = modificar(der,c);
+                        aux.addAll(izq);
+                        aux.addAll(der);
+                        return aux;
+                    }
+                    //CUANDO ES UNA CONCATENACION CON EL ESTADO DE ACEPTACION :
+                    izq.removeLast();
+                    izq.getLast().setAceptacion("A");
+                    return izq;
+                }   
+                case "|":
+                {
+                    aux.add(new AFND(contador, "ε",contador+1));
+                    izq = modificar(izq, 1);
+                    int c = izq.size()+ 1;
+                    der = modificar(der, c);
+                    aux.add(new AFND(contador, "ε", c));
+                    c += der.size();
+                    
+                    izq.getLast().setValor("ε");
+                    izq.getLast().setFin(c);
+                    der.getLast().setValor("ε");
+                    der.getLast().setFin(c);
+                    
+                    aux.addAll(izq);
+                    aux.addAll(der);
+                    aux.add(new AFND(c,"",-8));
+                    return aux;
+                }
+                case "*":
+                {
+                    aux.add(new AFND(contador,"ε",contador +1));
+                    izq = modificar(izq,1);
+                    
+                    izq.getLast().setValor("ε");
+                    izq.getLast().setFin(izq.getFirst().getInicio());
+                    aux.addAll(izq);
+                    
+                    int c = izq.size()+1;
+                    
+                    aux.add(new AFND(izq.getLast().getInicio(),"ε",c));
+                    aux.add(new AFND(contador,"ε",c));
+                    aux.add(new AFND(c,"",-8));
+                    return aux;
+                }
+                case "?":
+                {
+                    aux.add(new AFND(contador,"ε",contador+1));
+                    izq = modificar(izq,1);
+                    
+                    int c = izq.size()+1;
+                    
+                    izq.getLast().setValor("ε");
+                    izq.getLast().setFin(c);
+                    aux.addAll(izq);
+                    
+                    aux.add(new AFND(contador,"ε",c));
+                    aux.add(new AFND(c,"",-8));
+                    return aux;
+                }
+                case "+":
+                {
+                    aux.add(new AFND(contador,"ε",contador+1));
+                    izq = modificar(izq,1);
+                    
+                    izq.getLast().setValor("ε");
+                    izq.getLast().setFin(izq.getFirst().getInicio());
+                    aux.addAll(izq);
+                    
+                    int c = izq.size()+1;
+                    aux.add(new AFND(izq.getLast().getInicio(),"ε",c));
+                    aux.add(new AFND(c,"",-8));
+                    
+                    return aux;
+                }
+                default:
+                    break;
+            }
+        }
+        return aux;
+    }
+    
+    public LinkedList<AFND> modificar(LinkedList<AFND> datos, int c){
+        for(AFND dato: datos){
+            dato.setInicio(dato.getInicio()+c);
+            dato.setFin(dato.getFin()+c);
+        }
+        return datos;
+    }
 }
+
+
+
+ 

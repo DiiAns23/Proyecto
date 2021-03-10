@@ -64,20 +64,6 @@ public class Tabla_Transicion {
             aux = aux + "</tr>\n";
             auxiliar.add(aux1);
         }
-              
-//        for(Transiciones transis: transiciones){
-//            aux = aux +"<tr>\n <td>"+ transis.getInicio()+"</td>";
-//            for(String a: encabezado){
-//                if(a.equals(transis.alfabeto)){
-//                    aux = aux +"<td>"+transis.fin+"</td>\n";
-//                }else{
-//                    aux = aux +"<td> --- </td>\n";
-//                    
-//                }
-//            }
-//            aux = aux + "</tr>\n";
-//        }
-        
         
         aux = aux 
                 +"</table>>]\n"

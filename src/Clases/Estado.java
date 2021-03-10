@@ -16,14 +16,22 @@ public class Estado {
 
     private String estado;
     private LinkedList<Integer> siguientes;
-    private String transicion;
+    private String transicion, aceptacion;
 
-    public Estado(String estado, LinkedList<Integer> lista) { //{1,2,3} {1,4,5}
+    public Estado(String estado, LinkedList<Integer> lista, String aceptacion) { //{1,2,3} {1,4,5}
         this.estado = estado;
         this.siguientes = lista;
-        this.transicion = transicion;
+        this.aceptacion = aceptacion;
     }
 
+    public void setAceptacion(String aceptacion){
+        this.aceptacion = aceptacion;
+    }
+    
+    public String getAceptacion(){
+        return this.aceptacion;
+    }
+    
     public String getEstado() {
         return estado;
     }

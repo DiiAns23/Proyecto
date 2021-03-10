@@ -337,10 +337,7 @@ public class Lexico implements java_cup.runtime.Scanner {
 					case -6:
 						break;
 					case 6:
-						{
-            System.out.println("Error cometido en Lexico");
-            new Errores("Lexico", "Error lexico detectado. Se detecto:" +yytext(),yyline+"",yychar+"");
-}
+						{return new Symbol(sym.TODO,yyline,yychar, yytext());}
 					case -7:
 						break;
 					case 7:
@@ -440,10 +437,7 @@ public class Lexico implements java_cup.runtime.Scanner {
 					case -31:
 						break;
 					case 32:
-						{
-            System.out.println("Error cometido en Lexico");
-            new Errores("Lexico", "Error lexico detectado. Se detecto:" +yytext(),yyline+"",yychar+"");
-}
+						{return new Symbol(sym.TODO,yyline,yychar, yytext());}
 					case -32:
 						break;
 					case 33:

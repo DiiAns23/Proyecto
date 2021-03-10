@@ -82,7 +82,7 @@ public class Expresion_Regular {
                     case 1:
                         if (caracter != (char) 34) {
                             if(caracter == (char) 32){
-                                cc += "espacio";
+                                cc += "s";
                             }else{
                                 cc += caracter;
                             }
@@ -106,15 +106,19 @@ public class Expresion_Regular {
                     case 3:
                         switch (caracter) {
                             case (char) 110:
-                                agregar("s", "cadena");
+                                agregar("\\\\n", "cadena");
+                                cc="";
                                 estado = 0;
                                 break;
                             case (char) 39:
-                                agregar("c", "cadena");
+                                agregar("\'", "cadena");
+                                cc="";
                                 estado = 0;
                                 break;
                             case (char) 34:
-                                agregar("d", "cadena");
+                                agregar("\"", "cadena");
+                                cc="";
+                                estado = 0;
                                 break;
                             default:
                                 break;

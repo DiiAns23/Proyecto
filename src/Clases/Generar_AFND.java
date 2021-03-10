@@ -3,78 +3,77 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Errores;
+package Clases;
 
-import Clases.Interfaz1;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
  * @author diego
  */
-public class Errores {
+public class Generar_AFND {
     
-    public static ArrayList<Excepcion> ErroresCometidos = new ArrayList();
-    
-    public Errores(String tipo, String descripcion, String linea, String columna){
-        Excepcion nuevo = new Excepcion(tipo, descripcion, linea, columna);
-        ErroresCometidos.add(nuevo);
-    }
-    
-    public static void ReporteErrores() throws IOException{
+    public static void AFND(String nombre, LinkedList<AFND> transiciones) throws FileNotFoundException, IOException{
         String Contenido;
-        Contenido ="digraph G { node [rankdir=TB,shape= filled, style= filled, fontname=\"Times New Roman\", \n"
-                + "color=\"white\", fillcolor=\"#90EE90\"] nodotable \n"
-                + "[ label =<<table cellpadding='10' border = '1' align='center'> \n"
-                + "<tr>\n"
-                + "<td>REPORTE DE ERRORES</td>\n"
-                + "</tr>\n";
-               
-
+        Contenido ="digraph G { \n"
+                + "rankdir=LR;\n"
+                + "node [shape= circle];"
+                + " \n";
+        
         String aux = "";
-        for(Excepcion excepcion: ErroresCometidos){
-            aux += "<tr>\n"
-                + "<td>"+excepcion.toString()+"</td>\n"
-                + "</tr>\n";
+        for(AFND hola: transiciones){
+            if(null != hola.getAceptacion()){
+                aux += "S"+hola.getInicio()+";\n";
+                aux += "S"+hola.getFin()+"[shape=\"doublecircle\", style= filled,color=\"#098e3\"]; \n";
+            }else{
+                aux += "S"+hola.getInicio()+";\n";
+            }
+            
         }
-        aux += "</table>>]\n"
-                + "}";
-        Contenido += aux;
-        String ruta;
+        for(AFND jais: transiciones){
+            aux += "S"+jais.getInicio() +"-> S"+jais.getFin()+" [label =\""+jais.getValor()+"\"];\n";
+        }
+        
+        aux = aux +"}";
+        Contenido = Contenido + aux;
         File archivo;
         PrintWriter Escribir;
-        File arbol = new File("ERRORES_201903865");
+        String ruta;
+        File arbol = new File("AFND_201903865");
         if(arbol.exists()){
-            archivo = new File(arbol.getAbsolutePath()+"/ReporteErrores.dot");
+            archivo = new File(arbol.getAbsolutePath()+"/"+nombre+".dot");
             archivo.createNewFile();
-            ruta = arbol.getAbsolutePath()+"/ReporteErrores";
+            ruta = arbol.getAbsolutePath()+"/"+nombre;
+            Interfaz1.RutasAFND.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Contenido);
             Escribir.close();
         }
         else{
             arbol.mkdirs();
-            archivo = new File(arbol.getAbsolutePath()+"/ReporteErrores.dot");
+            archivo = new File(arbol.getAbsolutePath()+"/"+nombre+".dot");
             archivo.createNewFile();
-            ruta = arbol.getAbsolutePath()+"/ReporteErrores";
+            ruta = arbol.getAbsolutePath()+"/"+nombre;
+            Interfaz1.RutasAFND.add(ruta+".png");
             Escribir = new PrintWriter(archivo, "utf-8");
             Escribir.println(Contenido);
             Escribir.close();
         }
         
-        String text = "dot -Tpdf " + ruta+".dot" + " -o " + ruta + ".pdf";
+        String text = "dot -Tpng " + ruta+".dot" + " -o " + ruta + ".png";
         CMD(text);
         File borrar = new File (ruta+".dot");
         borrar.delete();
     }
-    
+     
     //Aqui se hace el proceso de consola para ejecutar el archivo .dot
-    public static void CMD(String cmd) {
+    private static void CMD(String cmd) {
         Process proceso;
         try {
             proceso = Runtime.getRuntime().exec(cmd);

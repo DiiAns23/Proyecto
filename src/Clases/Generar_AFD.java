@@ -19,17 +19,26 @@ import java.util.LinkedList;
  */
 public class Generar_AFD {
     
-    public void AFD(String nombre, LinkedList<Transiciones> transiciones) throws FileNotFoundException, IOException{
+    public void AFD(String nombre, LinkedList<Transiciones> transiciones, LinkedList<Estado> estados) throws FileNotFoundException, IOException{
         String Contenido;
         Contenido ="digraph G { \n"
-                + "rankdir=LR;"
-                + "node [shape= circle, style= filled, fontname=\"Times New Roman\", "
-                + "color=\"white\", fillcolor=\"#90EE90\"] \n";
+                + "rankdir=LR;\n"
+                + "node [shape= circle];"
+                + " \n";
         
         String aux = "";
+        int tam = transiciones.size()-1;
         for (Transiciones trans: transiciones) {
-            aux = aux +trans.getInicio()+"->"+trans.getFin()+"[label =\""+trans.getAlfabeto()+"\"];\n";
+            if(trans.getAceptacion().equals("A")){
+                aux += trans.getFin()+"[shape=\"doublecircle\", style= filled,color=\"#098e3\"]; \n";
+            }
         }
+        aux += transiciones.get(tam).getFin()+"[shape=\"doublecircle\", style= filled,color=\"#098e3\"]; \n";
+
+        for(Transiciones trans: transiciones){
+            aux += trans.getInicio()+" -> "+trans.getFin()+" [label =\""+trans.getAlfabeto()+"\"];\n";
+        }
+        
         aux = aux +"}";
         Contenido = Contenido + aux;
         File archivo;

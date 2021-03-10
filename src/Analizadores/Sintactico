@@ -126,19 +126,19 @@ comilla::=
  |  COMILLA:a ASCII:b  COMILLA:c            {:RESULT=(String)a+(String)b+(String)c;:}
  |  INVERBARRA:a COMILLASIMPLE:b            {:RESULT=(String)a+(String)b;:}
  |  INVERBARRA:a ALFAMIN:b                  {:RESULT=(String)a+(String)b;:}
- |  COMILLA ASIG:a  COMILLA                 {:RESULT=(String)a;:}
- |  COMILLA DPUNTOS:a  COMILLA              {:RESULT=(String)a;:}
- |  COMILLA DIP:a  COMILLA                  {:RESULT=(String)a;:}
- |  COMILLA NACION:a  COMILLA               {:RESULT=(String)a;:}
- |  COMILLA LLAVEI:a  COMILLA               {:RESULT=(String)a;:}
- |  COMILLA LLAVED:a  COMILLA               {:RESULT=(String)a;:}
- |  COMILLA INTERR:a  COMILLA               {:RESULT=(String)a;:}
- |  COMILLA PTCOMA:a  COMILLA               {:RESULT=(String)a;:}
- |  COMILLA BARRA:a  COMILLA                {:RESULT=(String)a;:}
- |  COMILLA MAS:a  COMILLA                  {:RESULT=(String)a;:}
- |  COMILLA POR:a  COMILLA                  {:RESULT=(String)a;:}
- |  COMILLA PORC:a  COMILLA                 {:RESULT=(String)a;:}
- |  COMILLA  COMILLA                        {:RESULT = " ";:}
+ |  COMILLA ASIG:a  COMILLA                 {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA DPUNTOS:a  COMILLA              {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA DIP:a  COMILLA                  {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA NACION:a  COMILLA               {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA LLAVEI:a  COMILLA               {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA LLAVED:a  COMILLA               {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA INTERR:a  COMILLA               {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA PTCOMA:a  COMILLA               {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA BARRA:a  COMILLA                {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA MAS:a  COMILLA                  {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA POR:a  COMILLA                  {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA PORC:a  COMILLA                 {:RESULT="\""+(String)a+"\"";:}
+ |  COMILLA  COMILLA                        {:RESULT = "\" \"";:}
 ;
 
 
