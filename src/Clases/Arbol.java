@@ -426,7 +426,7 @@ public class Arbol {
                 {
                     if(!node.derecha.etiquetas.equalsIgnoreCase("#")){
                         izq.removeLast();
-                        int c = izq.size();
+                        int c = tam(izq);
                         der = modificar(der,c);
                         aux.addAll(izq);
                         aux.addAll(der);
@@ -441,10 +441,10 @@ public class Arbol {
                 {
                     aux.add(new AFND(contador, "ε",contador+1));
                     izq = modificar(izq, 1);
-                    int c = izq.size()+ 1;
+                    int c = tam(izq)+ 1;
                     der = modificar(der, c);
                     aux.add(new AFND(contador, "ε", c));
-                    c += der.size();
+                    c += tam(der);
                     
                     izq.getLast().setValor("ε");
                     izq.getLast().setFin(c);
@@ -465,7 +465,7 @@ public class Arbol {
                     izq.getLast().setFin(izq.getFirst().getInicio());
                     aux.addAll(izq);
                     
-                    int c = izq.size()+1;
+                    int c = tam(izq)+1;
                     
                     aux.add(new AFND(izq.getLast().getInicio(),"ε",c));
                     aux.add(new AFND(contador,"ε",c));
@@ -477,7 +477,7 @@ public class Arbol {
                     aux.add(new AFND(contador,"ε",contador+1));
                     izq = modificar(izq,1);
                     
-                    int c = izq.size()+1;
+                    int c = tam(izq)+1;
                     
                     izq.getLast().setValor("ε");
                     izq.getLast().setFin(c);
@@ -496,7 +496,7 @@ public class Arbol {
                     izq.getLast().setFin(izq.getFirst().getInicio());
                     aux.addAll(izq);
                     
-                    int c = izq.size()+1;
+                    int c = tam(izq)+1;
                     aux.add(new AFND(izq.getLast().getInicio(),"ε",c));
                     aux.add(new AFND(c,"",-8));
                     
@@ -507,6 +507,16 @@ public class Arbol {
             }
         }
         return aux;
+    }
+    
+    public int tam(LinkedList<AFND> datos){
+        LinkedList<Integer> lista = new LinkedList();
+        for(AFND dato: datos){
+            if(!lista.contains(dato.getInicio())){
+                lista.add(dato.getInicio());
+            }
+        }
+        return (lista.size());
     }
     
     public LinkedList<AFND> modificar(LinkedList<AFND> datos, int c){

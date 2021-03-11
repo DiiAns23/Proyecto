@@ -82,7 +82,7 @@ public class Expresion_Regular {
                     case 1:
                         if (caracter != (char) 34) {
                             if(caracter == (char) 32){
-                                cc += "s";
+                                cc += " ";
                             }else{
                                 cc += caracter;
                             }
