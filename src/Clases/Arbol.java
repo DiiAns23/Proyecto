@@ -358,6 +358,7 @@ public class Arbol {
     }
     
     public boolean aceptacion = false;
+    
     public void Estados(String nombre, LinkedList<Integer> siguientes){
         for (String encabezado1 : encabezado) {  
             LinkedList<Integer> auxiliar1 = new LinkedList();
